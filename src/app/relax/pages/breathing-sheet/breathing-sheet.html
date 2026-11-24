@@ -1,0 +1,18 @@
+<div class="br-stage">
+  <div class="br-circle" [attr.data-phase]="phase()" aria-hidden="true"></div>
+  <p class="br-say" aria-live="polite">
+    {{ say() }}
+    @if (left(); as left) {
+      <span class="br-left">{{ left }}</span>
+    }
+  </p>
+</div>
+<p class="br-round">{{ round() }}</p>
+
+<button type="button" class="gm-btn gm-btn-primary" aria-keyshortcuts="q" (click)="toggle()">
+  {{ action() }}
+</button>
+<p class="gm-hint">
+  Einatmen, während der Kreis wächst, ausatmen, während er schrumpft, dann mit leerer Lunge halten. Das lange
+  Ausatmen und Halten beruhigt. Mit Ton führen zwei Klänge durch jede Runde.
+</p>

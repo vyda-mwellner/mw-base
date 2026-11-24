@@ -1,0 +1,26 @@
+.sc-section + .sc-section {
+  margin-block-start: var(--vl-space-6);
+}
+
+.sc-section > summary {
+  cursor: pointer;
+  list-style: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--gm-accent);
+    outline-offset: 2px;
+  }
+}
+
+// The square of a shut section is out, as the lamp of a row is.
+.sc-section:not([open]) > summary::before {
+  background: var(--gm-dim);
+}
+
+.sc-day {
+  color: var(--gm-muted);
+}
+
+.sc-gap {
+  margin-block-start: var(--vl-space-4);
+}

@@ -1,0 +1,55 @@
+@if (error(); as error) {
+  <div class="gm-banner" data-tone="danger">
+    <p class="gm-banner-title">Nicht erreichbar</p>
+    <p>{{ error }}</p>
+  </div>
+} @else if (pending()) {
+  <p class="gm-empty">Wird gelesen.</p>
+} @else {
+  @for (section of sections(); track section.title) {
+    <details class="sc-section" [open]="!section.folded">
+      <summary class="gm-plaque">
+        {{ section.title }}
+        <span class="gm-plaque-note">{{ section.rows.length }}</span>
+      </summary>
+      @if (section.rows.length > 0) {
+        <ul class="gm-rows">
+          @for (row of section.rows; track row.id) {
+            <li class="gm-row">
+              <button type="button" class="gm-row-main" [disabled]="!row.link" (click)="open(row.link)">
+                <span class="gm-led" [attr.data-tone]="row.tone">
+                  @if (row.severity) {
+                    <span class="vl-sr-only">{{ row.severity }}</span>
+                  }
+                </span>
+                <span class="gm-text">
+                  <span class="gm-label">{{ row.product ?? row.text }}</span>
+                  @if (row.product) {
+                    <span class="gm-note">{{ row.text }}</span>
+                  }
+                </span>
+                @if (row.fresh) {
+                  <span class="gm-tag" data-tone="info">neu</span>
+                }
+                @if (row.stack) {
+                  <span class="gm-tag">{{ row.stack }}</span>
+                }
+                <span class="gm-value sc-day">{{ row.day }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="gm-empty">Keine.</p>
+      }
+    </details>
+  }
+}
+<button type="button" class="gm-btn sc-gap" aria-keyshortcuts="q" [disabled]="busy()" (click)="reload()">
+  Neu laden
+</button>
+<p class="gm-hint">
+  Die neuen Meldungen von wid.cert-bund.de, alle 30 Minuten gelesen; Updates zu älteren fehlen. Die Lampe
+  zeigt die Stufe: rot kritisch, gelb hoch, aus bei mittel und niedrig. NEU ist seit deinem letzten Besuch
+  erschienen. Enter auf einer Überschrift klappt sie auf und zu.
+</p>

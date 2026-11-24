@@ -1,0 +1,15 @@
+.us-stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  .gm-stat-value {
+    font-size: 1.7rem;
+  }
+
+  .gm-stat-label {
+    font-size: 0.9rem;
+  }
+}
+
+.us-gap {
+  margin-block-start: var(--vl-space-4);
+}

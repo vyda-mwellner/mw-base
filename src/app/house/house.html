@@ -1,0 +1,82 @@
+<div class="vl-device">
+  <header class="vl-status" data-tauri-drag-region>
+    <app-island
+      [notices]="status.notices()"
+      [calm]="deskTitle() ?? status.calm()"
+      [working]="status.activity()"
+      [open]="noticesOpen()"
+      [cursor]="noticeAt()"
+      (picked)="goToNotice($event)"
+    />
+    <button
+      type="button"
+      class="vl-sound"
+      [attr.aria-pressed]="settings.sound()"
+      aria-label="Ton"
+      aria-keyshortcuts="t"
+      (click)="toggleSound()"
+    >
+      <svg viewBox="0 0 8 8" width="16" height="16" shape-rendering="crispEdges" aria-hidden="true">
+        <path fill="currentColor" d="M0 3h2v2H0zM2 2h1v4H2zM3 1h1v6H3z" />
+        @if (settings.sound()) {
+          <path fill="currentColor" d="M5 3h1v2H5zM6 1h1v1H6zM7 2h1v4H7zM6 6h1v1H6z" />
+        }
+      </svg>
+    </button>
+  </header>
+  <app-building-scene
+    [class.vl-out]="full()"
+    [place]="place()"
+    [pose]="figure.pose()"
+    [tones]="tones()"
+    [near]="menu.selectedThing()"
+    [sky]="daylight.sky()"
+    [weather]="weather.outside()"
+    [facts]="status.facts()"
+    [gauges]="status.gauges()"
+    [popped]="popped()"
+  />
+  @if (place().room) {
+    <main class="vl-panel" [class.vl-panel-sheet]="place().thing" [class.vl-panel-full]="full()">
+      <header class="vl-head">
+        <div class="vl-head-row">
+          <h1 class="vl-head-title">{{ head().title }}</h1>
+          <button type="button" class="vl-close" aria-label="Schließen" (click)="back()">
+            <kbd>{{ closeKey() }}</kbd>
+          </button>
+        </div>
+        @if (head().keys.length > 0) {
+          <p class="vl-keys">
+            <ng-container [ngTemplateOutlet]="hints" [ngTemplateOutletContext]="{ $implicit: head().keys }" />
+          </p>
+        }
+      </header>
+      <div #sheet class="vl-sheet" tabindex="-1">
+        <router-outlet />
+      </div>
+    </main>
+  }
+  <!-- The desk and Markdown with it load once the first desk opens; fetched ahead while the app is idle. -->
+  @defer (when workbench.desk(); prefetch on idle) {
+    @if (workbench.desk()) {
+      <app-workbench />
+    }
+  }
+  @if (baseKeys().length > 0) {
+    <footer class="vl-keys vl-always">
+      <ng-container [ngTemplateOutlet]="hints" [ngTemplateOutletContext]="{ $implicit: baseKeys() }" />
+    </footer>
+  }
+  <app-toast-stack [class.ts-low]="baseKeys().length === 0" />
+</div>
+
+<ng-template #hints let-keys>
+  @for (hint of keys; track hint.keys[0]) {
+    <span>
+      @for (key of hint.keys; track key) {
+        <kbd>{{ key }}</kbd>
+      }
+      {{ hint.label }}
+    </span>
+  }
+</ng-template>

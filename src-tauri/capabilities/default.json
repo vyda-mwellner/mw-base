@@ -1,0 +1,19 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Main window: the commands of the app, dragging the window by its status bar and opening links in Chrome or Firefox.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-start-dragging",
+    "opener:default",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        { "url": "https://*", "app": "Google Chrome" },
+        { "url": "http://*", "app": "Google Chrome" },
+        { "url": "https://github.com/*", "app": "Firefox" }
+      ]
+    }
+  ]
+}

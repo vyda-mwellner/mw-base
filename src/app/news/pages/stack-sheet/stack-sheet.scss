@@ -1,0 +1,12 @@
+.sk-product + .sk-product {
+  margin-block-start: var(--vl-space-3);
+}
+
+// The date is what counts, the words around it are the same in every row.
+.sk-status {
+  color: var(--gm-muted);
+}
+
+.sk-gap {
+  margin-block-start: var(--vl-space-4);
+}

@@ -1,0 +1,27 @@
+<svg:g>
+  @for (particle of particles(); track $index) {
+    <rect
+      class="gx-speck"
+      [attr.x]="particle.x"
+      [attr.y]="particle.y"
+      [attr.width]="particle.w"
+      [attr.height]="particle.h"
+      [attr.fill]="particle.color"
+      [attr.opacity]="particle.fade"
+    />
+  }
+  @for (popup of popups(); track $index) {
+    <text
+      class="gx-popup"
+      [attr.data-tone]="popup.tone"
+      [attr.x]="popup.x"
+      [attr.y]="popup.y"
+      [attr.opacity]="popup.fade"
+    >
+      {{ popup.text }}
+    </text>
+  }
+  @if (flash() > 0) {
+    <rect class="gx-flash" x="-1000" y="-1000" width="3000" height="3000" [attr.opacity]="flash()" />
+  }
+</svg:g>

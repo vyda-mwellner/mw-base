@@ -1,0 +1,29 @@
+<div class="fp-popup" role="dialog" aria-label="Find in Files">
+  <p class="fp-head">
+    <span class="fp-title">Find in Files</span>
+    <span class="fp-scope">In Project</span>
+    <span class="fp-count">{{ count() }}</span>
+  </p>
+  <input
+    #field
+    class="fp-field"
+    type="text"
+    aria-label="Suchtext"
+    autocomplete="off"
+    spellcheck="false"
+    [value]="query()"
+    (input)="typed($event)"
+    (keydown)="key($event)"
+  />
+  <ul class="fp-list" role="listbox">
+    @for (row of rows(); track row.key) {
+      <li class="fp-row" role="option" [attr.aria-selected]="row.on" [class.fp-on]="row.on">
+        <span class="fp-text"
+          >{{ row.before }}<mark>{{ row.match }}</mark
+          >{{ row.after }}</span
+        >
+        <span class="fp-place">{{ row.place }}</span>
+      </li>
+    }
+  </ul>
+</div>

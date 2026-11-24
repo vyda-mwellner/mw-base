@@ -1,0 +1,16 @@
+// A blink now and then: the eyes are gone for a moment.
+.vl-face {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-blink 4.6s steps(1) infinite;
+  }
+}
+
+@keyframes vl-blink {
+  0% {
+    opacity: 1;
+  }
+
+  96% {
+    opacity: 0;
+  }
+}

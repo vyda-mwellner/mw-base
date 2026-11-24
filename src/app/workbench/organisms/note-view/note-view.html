@@ -1,0 +1,17 @@
+@if (page(); as page) {
+  <app-find-bar
+    label="In der Notiz suchen"
+    [total]="finder.total()"
+    [(query)]="finder.query"
+    [(active)]="finder.active"
+  />
+  @if (page.facts.length > 0) {
+    <dl class="wb-record wb-facts">
+      @for (fact of page.facts; track fact.label) {
+        <dt>{{ fact.label }}</dt>
+        <dd>{{ fact.value }}</dd>
+      }
+    </dl>
+  }
+  <article class="wb-prose" #content [innerHTML]="body()" (click)="click($event)"></article>
+}

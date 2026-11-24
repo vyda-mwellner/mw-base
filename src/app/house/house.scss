@@ -1,0 +1,187 @@
+// The size of the window in `tauri.conf.json`; in a browser it is a frame on the page. `VIEW` in
+// `engine/plan.ts` is what the scene gets of it.
+.vl-device {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  inline-size: min(100vw, 770px);
+  block-size: min(100vh, 1021px);
+  overflow: hidden;
+  border: 3px solid var(--vl-edge);
+  background: var(--vl-page);
+}
+
+.vl-status {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  flex: none;
+  align-content: center;
+  block-size: 3.125rem;
+  background: var(--vl-page);
+}
+
+.vl-sound {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--vl-space-4);
+  display: grid;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border: 2px solid var(--gm-frame);
+  background: var(--gm-panel);
+  color: var(--vl-bright);
+  box-shadow: 3px 3px 0 var(--vl-edge);
+  cursor: pointer;
+  translate: 0 -50%;
+
+  &:focus-visible {
+    outline: 2px solid var(--vl-bright);
+    outline-offset: 2px;
+  }
+
+  &[aria-pressed='false'] {
+    color: var(--gm-dim);
+  }
+}
+
+.vl-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-block-size: 0;
+}
+
+.vl-panel-sheet {
+  z-index: 5;
+  margin-block-start: calc(-1 * var(--vl-space-5));
+  border-block-start: 3px solid var(--vl-edge);
+  background: var(--vl-card);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 14%);
+}
+
+// A game, tables or a viewer: the scene steps aside and the sheet has the whole window under the island.
+.vl-out {
+  display: none !important;
+}
+
+.vl-panel-full {
+  margin-block-start: 0;
+  border-block-start: 0;
+}
+
+.vl-head {
+  flex: none;
+  padding: var(--vl-space-4) var(--vl-space-5) var(--vl-space-3);
+}
+
+// The head of an open thing is a bar of its own: the sheet scrolls away under it.
+.vl-panel-sheet > .vl-head {
+  border-block-end: 2px solid var(--gm-frame);
+  background: var(--gm-raised);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 70%);
+}
+
+.vl-head-row {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-3);
+
+  &:not(:last-child) {
+    margin-block-end: var(--vl-space-3);
+  }
+}
+
+.vl-head-title {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--vl-space-3);
+  min-inline-size: 0;
+  margin: 0;
+  color: var(--vl-bright);
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-shadow: 2px 2px 0 var(--vl-edge);
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    flex: none;
+    inline-size: 0.55rem;
+    block-size: 0.55rem;
+    background: var(--gm-accent);
+    box-shadow: 2px 2px 0 var(--vl-edge);
+  }
+}
+
+.vl-close {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--vl-font-pixel);
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--vl-bright);
+    outline-offset: 2px;
+  }
+}
+
+.vl-keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--vl-space-2) var(--vl-space-3);
+  margin: 0;
+  color: var(--gm-muted);
+  font-family: var(--vl-font-pixel);
+  font-size: 0.9rem;
+  line-height: 1;
+
+  // Key and label centred on each other: on the baseline the room under the text pushes the keys up.
+  > span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--vl-space-1);
+  }
+}
+
+.vl-keys kbd,
+.vl-close kbd {
+  padding-block: 0;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.vl-keys kbd:last-of-type {
+  margin-inline-end: var(--vl-space-1);
+}
+
+// As high as `VIEW.height` in `plan.ts` leaves under the scene of the whole house.
+.vl-always {
+  flex: none;
+  block-size: 2.375rem;
+  padding-inline: var(--vl-space-5);
+  border-block-start: 3px solid var(--vl-edge);
+  background: var(--gm-raised);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 14%);
+}
+
+.vl-sheet {
+  flex: 1;
+  outline: none;
+  min-block-size: 0;
+  padding: 0 var(--vl-space-5) var(--vl-space-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: var(--vl-space-5);
+  scrollbar-width: thin;
+}
+
+.vl-panel-sheet > .vl-sheet {
+  padding-block-start: var(--vl-space-4);
+}

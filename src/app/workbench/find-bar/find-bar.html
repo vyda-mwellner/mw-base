@@ -1,0 +1,18 @@
+<div class="gm-form">
+  <label class="gm-row gm-field">
+    <span class="gm-label">{{ label() }}</span>
+    <input
+      #field
+      class="gm-slot"
+      type="search"
+      autocomplete="off"
+      spellcheck="false"
+      [value]="query()"
+      (input)="query.set(field.value)"
+      (keydown)="fieldKey($event)"
+    />
+    @if (count(); as count) {
+      <span class="gm-note" aria-live="polite">{{ count }}</span>
+    }
+  </label>
+</div>

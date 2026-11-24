@@ -1,0 +1,521 @@
+// The task on top in the house's own style, under it the second screen: IntelliJ's dark theme in a block.
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vl-space-4);
+  block-size: 100%;
+  --dj-ground: #1e1f22;
+  --dj-panel: #2b2d30;
+  --dj-line: #393b40;
+  --dj-text: #dfe1e5;
+  --dj-quiet: #868a91;
+  --dj-blue: #3574f0;
+  --dj-green: #5fb865;
+  --dj-gold: #f2c55c;
+  --dj-red: #e06c75;
+}
+
+.dj-ide {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-block-size: 0;
+  border: 3px solid var(--vl-edge);
+  background: var(--dj-ground);
+  box-shadow:
+    inset 0 1px 0 rgb(255 243 209 / 22%),
+    4px 4px 0 var(--vl-edge);
+  color: var(--dj-text);
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 12px;
+}
+
+code,
+.dj-row,
+.dj-tab,
+.dj-status {
+  font-family: ui-monospace, 'JetBrains Mono', Menlo, monospace;
+}
+
+code {
+  padding: 0 4px;
+  border-radius: 3px;
+  background: #393b40;
+  color: #f0f1f3;
+}
+
+.dj-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+  padding: 6px 10px;
+  border-block-end: 1px solid var(--dj-line);
+  background: var(--dj-panel);
+}
+
+.dj-badge {
+  display: grid;
+  place-items: center;
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #e5884e, #b4549e);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+// A widget of the main toolbar: a name with a little arrow that would open its menu.
+.dj-widget {
+  font-weight: 600;
+
+  &::after {
+    content: '▾';
+    margin-inline-start: 4px;
+    color: var(--dj-quiet);
+    font-size: 9px;
+  }
+}
+
+.dj-branch {
+  margin-inline-start: 4px;
+  color: #c9ccd2;
+  font-weight: 400;
+
+  &::before {
+    content: '⎇';
+    margin-inline-end: 4px;
+    color: var(--dj-quiet);
+  }
+}
+
+.dj-run {
+  margin-inline-start: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #393b40;
+  font-weight: 400;
+}
+
+.dj-play {
+  inline-size: 0;
+  block-size: 0;
+  border-block: 6px solid transparent;
+  border-inline-start: 9px solid var(--dj-green);
+}
+
+.dj-dots {
+  display: flex;
+  gap: 4px;
+  margin-inline-start: auto;
+}
+
+.dj-dot {
+  inline-size: 9px;
+  block-size: 9px;
+  border-radius: 50%;
+  background: #43454a;
+
+  &[data-state='now'] {
+    background: var(--dj-blue);
+  }
+
+  &[data-state='clean'] {
+    background: var(--dj-gold);
+  }
+
+  &[data-state='solved'],
+  &[data-state='helped'] {
+    background: var(--dj-green);
+  }
+
+  &[data-state='skipped'] {
+    background: var(--dj-red);
+  }
+}
+
+.dj-position {
+  color: var(--dj-quiet);
+  font-variant-numeric: tabular-nums;
+}
+
+.dj-body {
+  display: flex;
+  flex: 1;
+  min-block-size: 0;
+}
+
+.dj-tree {
+  flex: none;
+  inline-size: 160px;
+  overflow: hidden;
+  padding-block: 6px;
+  border-inline-end: 1px solid var(--dj-line);
+  background: var(--dj-panel);
+}
+
+.dj-row {
+  margin: 0;
+  padding: 1px 6px 1px calc(6px + var(--dj-depth) * 8px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: #c9ccd2;
+}
+
+// An open folder: the arrow that would fold it, then its name in the folder grey.
+.dj-folder {
+  color: var(--dj-quiet);
+
+  &::before {
+    content: '▾';
+    display: inline-block;
+    inline-size: 10px;
+    font-size: 9px;
+  }
+}
+
+// The kind of a file as IntelliJ marks it: a small coloured tile before the name.
+[data-ext]::before {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 13px;
+  block-size: 13px;
+  margin-inline-end: 5px;
+  border-radius: 3px;
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  vertical-align: -2px;
+}
+
+[data-ext='kt']::before {
+  content: 'K';
+  background: linear-gradient(135deg, #7f52ff 40%, #e44857);
+}
+
+[data-ext='ts']::before {
+  content: 'TS';
+  background: #3178c6;
+}
+
+[data-ext='html']::before {
+  content: '<>';
+  background: #e44d26;
+}
+
+[data-ext='yml']::before {
+  content: 'Y';
+  background: #c2524a;
+}
+
+[data-ext='sql']::before {
+  content: 'S';
+  background: #3d8fa8;
+}
+
+[data-ext='md']::before {
+  content: 'M';
+  background: #6b737e;
+}
+
+// The thin strip down the left edge with a button for every tool window, lit while it is open.
+.dj-stripe {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  inline-size: 30px;
+  padding-block: 6px;
+  border-inline-end: 1px solid var(--dj-line);
+  background: var(--dj-panel);
+}
+
+.dj-icon {
+  display: grid;
+  place-items: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: 5px;
+  color: #9da0a8;
+  font-size: 14px;
+
+  &[data-icon='project']::before {
+    content: '▤';
+  }
+
+  &[data-icon='commit']::before {
+    content: '⊙';
+  }
+
+  &[data-icon='structure']::before {
+    content: '≣';
+  }
+
+  &[data-icon='find']::before {
+    content: '⌕';
+  }
+
+  &[data-icon='run']::before {
+    content: '▷';
+  }
+
+  &[data-icon='terminal']::before {
+    content: '❯';
+    font-size: 12px;
+  }
+}
+
+.dj-icon-low {
+  margin-block-start: auto;
+}
+
+.dj-icon-on {
+  background: #3d4b6a;
+  color: var(--dj-text);
+}
+
+.dj-here {
+  background: #2e436e;
+  color: var(--dj-text);
+}
+
+.dj-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+.dj-tabs {
+  display: flex;
+  flex: none;
+  overflow: hidden;
+  border-block-end: 1px solid var(--dj-line);
+}
+
+.dj-tab {
+  padding: 6px 10px;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--dj-quiet);
+}
+
+.dj-tab-on {
+  color: var(--dj-text);
+  box-shadow: inset 0 -2px 0 var(--dj-blue);
+
+  &::after {
+    content: '×';
+    margin-inline-start: 6px;
+    color: var(--dj-quiet);
+  }
+}
+
+// IntelliJ's verdict on the file, top right in the editor: nothing to complain about.
+.dj-inspect {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 12px;
+  z-index: 1;
+  color: var(--dj-green);
+  font-size: 12px;
+
+  &::before {
+    content: '✓';
+  }
+}
+
+// The task above the screen, made of the house's menu pieces. Always as high, so the editor never jumps.
+.dj-task {
+  flex: none;
+  box-sizing: border-box;
+  block-size: 8.5rem;
+  margin: 0;
+  padding: var(--vl-space-3) var(--vl-space-4);
+  overflow: hidden;
+
+  &[data-tone='clean'] {
+    border-color: var(--gm-accent);
+  }
+
+  &[data-tone='solved'],
+  &[data-tone='helped'] {
+    border-color: var(--gm-ok);
+  }
+
+  &[data-tone='skipped'] {
+    border-color: var(--vl-danger);
+  }
+
+  .gm-plaque {
+    margin-block-end: var(--vl-space-2);
+  }
+
+  .gm-hint {
+    margin-block-start: var(--vl-space-2);
+  }
+
+  code {
+    font-size: 0.72em;
+    vertical-align: 0.1em;
+  }
+}
+
+.dj-say {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-3);
+
+  .gm-label {
+    flex: 1;
+    margin: 0;
+  }
+
+  .gm-btn {
+    flex: none;
+  }
+}
+
+.dj-chord {
+  display: flex;
+  gap: 4px;
+}
+
+.dj-tip {
+  margin: var(--vl-space-2) 0 0;
+}
+
+.dj-editor {
+  position: relative;
+  flex: 1;
+  min-block-size: 0;
+}
+
+.dj-reaction {
+  position: absolute;
+  inset-block-start: 14%;
+  inset-inline: 0;
+  inline-size: min(300px, 86%);
+  margin-inline: auto;
+  padding: 10px 14px;
+  border: 1px solid #43454a;
+  border-radius: 8px;
+  background: var(--dj-panel);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 50%);
+
+  p {
+    margin: 0;
+  }
+}
+
+.dj-reaction-title {
+  font-weight: 600;
+}
+
+.dj-reaction-text {
+  margin-block-start: 4px !important;
+  color: var(--dj-quiet);
+}
+
+// A tool window at the bottom, as IntelliJ docks Find, Run and Terminal under the editor.
+.dj-tool {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  block-size: 9.5rem;
+  border-block-start: 1px solid var(--dj-line);
+  background: var(--dj-panel);
+}
+
+.dj-pane-title {
+  flex: none;
+  margin: 0;
+  padding: 5px 10px;
+  color: var(--dj-text);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.dj-tool-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dj-tool-icons {
+  color: var(--dj-quiet);
+  font-weight: 400;
+  letter-spacing: 0.3em;
+}
+
+.dj-tool-rows {
+  flex: 1;
+  margin: 0;
+  padding: 0 0 4px;
+  overflow-y: auto;
+  list-style: none;
+  font-family: ui-monospace, 'JetBrains Mono', Menlo, monospace;
+  font-size: 11.5px;
+}
+
+.dj-tool-row {
+  display: flex;
+  gap: 12px;
+  padding: 1px 10px;
+  white-space: nowrap;
+
+  &[data-tone='ok'] .dj-tool-text {
+    color: var(--dj-green);
+  }
+}
+
+.dj-tool-place {
+  flex: none;
+  color: var(--dj-quiet);
+}
+
+.dj-tool-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dj-status {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: none;
+  padding: 4px 10px;
+  border-block-start: 1px solid var(--dj-line);
+  background: var(--dj-panel);
+  color: var(--dj-quiet);
+  font-size: 11px;
+}
+
+.dj-mode {
+  padding: 0 6px;
+  border-radius: 3px;
+  background: #43454a;
+  color: var(--dj-text);
+  font-weight: 600;
+
+  &[data-mode='INSERT'] {
+    background: #2b6e3b;
+  }
+
+  &[data-mode^='V'] {
+    background: #6b4fa0;
+  }
+}
+
+.dj-spacer {
+  flex: 1;
+}

@@ -1,0 +1,33 @@
+.cs-gap {
+  margin-block-start: var(--vl-space-4);
+}
+
+.cs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vl-space-3);
+  margin-block-start: var(--vl-space-4);
+}
+
+.cs-log {
+  max-block-size: 16rem;
+  margin: 0;
+  padding: var(--vl-space-3) var(--vl-space-4);
+  overflow: auto;
+  border: 2px solid var(--gm-frame);
+  background: var(--gm-panel);
+  color: var(--gm-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  [data-stream='command'] {
+    color: var(--gm-accent);
+  }
+
+  [data-stream='stdout'] {
+    color: var(--gm-text);
+  }
+}

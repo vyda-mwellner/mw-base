@@ -1,0 +1,25 @@
+@if (page(); as page) {
+  <app-find-bar
+    label="Im Bericht suchen"
+    [total]="finder.total()"
+    [(query)]="finder.query"
+    [(active)]="finder.active"
+  />
+  @for (dial of page.dials; track dial.label) {
+    <div class="rv-dial" role="group" [attr.aria-label]="dial.label">
+      <span class="gm-label">{{ dial.label }}</span>
+      @for (option of dial.options; track option) {
+        <button
+          type="button"
+          class="gm-btn gm-btn-sm"
+          [class.gm-btn-primary]="option === dial.value"
+          [attr.aria-pressed]="option === dial.value"
+          (click)="dial.pick(option)"
+        >
+          {{ option }}
+        </button>
+      }
+    </div>
+  }
+  <div #content class="wb-content" [innerHTML]="body()" (click)="act($event)"></div>
+}

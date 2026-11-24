@@ -1,0 +1,42 @@
+<div class="gf-cabinet">
+  <div class="gf-hud">
+    <p class="gf-score" role="status">
+      <span class="gf-value">{{ score() }}</span>
+      <span class="gf-unit">{{ scoreUnit() }}</span>
+    </p>
+    <p class="gf-mid">
+      @for (step of [level()]; track step) {
+        <span class="gf-level">Level {{ step }}</span>
+      }
+      <span class="gf-combo">{{ combo() }}</span>
+    </p>
+    <p class="gf-best">
+      <span class="gf-unit">Rekord</span>
+      <span class="gf-value">{{ best() }}</span>
+    </p>
+  </div>
+  <div class="gf-field">
+    <ng-content />
+    @if (waiting()) {
+      <div class="gf-message">
+        @if (over()) {
+          <p class="gf-title">{{ result() }}</p>
+          @if (verdict()) {
+            <p class="gf-verdict" [class.gf-record]="record()">{{ verdict() }}</p>
+          }
+          @if (note()) {
+            <p class="gf-note">{{ note() }}</p>
+          }
+        } @else {
+          <p class="gf-title">{{ rule() }}</p>
+        }
+        @if (target() > 0) {
+          <p class="gf-task" [class.gf-task-done]="solved()">
+            {{ solved() ? 'Tagesaufgabe geschafft' : 'Tagesaufgabe: ' + task() }}
+          </p>
+        }
+        <p class="gf-start"><kbd>Leertaste</kbd> {{ over() ? 'noch mal' : 'starten' }}</p>
+      </div>
+    }
+  </div>
+</div>

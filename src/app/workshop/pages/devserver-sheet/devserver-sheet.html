@@ -1,0 +1,86 @@
+@if (error(); as error) {
+  <div class="gm-banner" data-tone="danger">
+    <p class="gm-banner-title">Nicht lesbar</p>
+    <p>{{ error }}</p>
+  </div>
+}
+
+<h2 class="gm-plaque">
+  Frontends
+  <span class="gm-plaque-note">{{ upCount() }} laufen</span>
+</h2>
+@if (rows().length > 0) {
+  <ul class="gm-rows">
+    @for (row of rows(); track row.id) {
+      <li class="gm-row">
+        <button type="button" class="gm-row-main" [attr.aria-label]="row.action" (click)="primary(row)">
+          <span class="gm-led" [attr.data-tone]="row.tone" aria-hidden="true"></span>
+          <span class="gm-text">
+            <span class="gm-label">{{ row.label }}</span>
+            <span class="gm-note" [attr.data-tone]="row.noteTone">{{ row.note }}</span>
+          </span>
+          @if (row.favorite) {
+            <span class="gm-tag">Favorit</span>
+          }
+        </button>
+        @if (row.stoppable) {
+          <button
+            type="button"
+            class="gm-row-x"
+            tabindex="-1"
+            data-row-key="x"
+            [attr.aria-label]="row.stop"
+            (click)="stop(row)"
+          ></button>
+        }
+        <button
+          type="button"
+          class="ds-hidden"
+          tabindex="-1"
+          data-row-key="f"
+          [attr.aria-label]="row.favoriteAction"
+          (click)="toggleFavorite(row)"
+        ></button>
+        <button
+          type="button"
+          class="ds-hidden"
+          tabindex="-1"
+          data-row-key="l"
+          [attr.aria-label]="row.logAction"
+          (click)="showLog(row)"
+        ></button>
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="gm-empty">
+    {{ loading() ? 'Wird gelesen ...' : 'Kein Frontend mit Repo und lokalem health-Port in apps.json.' }}
+  </p>
+}
+
+<div class="ds-actions">
+  <button type="button" class="gm-btn gm-btn-primary" aria-keyshortcuts="q" (click)="startFavorites()">
+    Favoriten starten
+  </button>
+  <button type="button" class="gm-btn" aria-keyshortcuts="e" (click)="stopAll()">Alle stoppen</button>
+</div>
+
+@if (backends().length > 0) {
+  <h2 class="gm-plaque">Backends</h2>
+  <ul class="gm-rows">
+    @for (backend of backends(); track backend.id) {
+      <li class="gm-row">
+        <span class="gm-led" [attr.data-tone]="backend.tone" aria-hidden="true"></span>
+        <span class="gm-text">
+          <span class="gm-label">{{ backend.label }}</span>
+          <span class="gm-note">{{ backend.note }}</span>
+        </span>
+      </li>
+    }
+  </ul>
+}
+
+<p class="gm-hint">
+  Enter startet ein Frontend mit nx serve oder npm start oder öffnet es, wenn es schon läuft. X stoppt nur,
+  was Base selbst gestartet hat, ein Server im Terminal bleibt an. Alle enden mit dem Fenster.
+</p>

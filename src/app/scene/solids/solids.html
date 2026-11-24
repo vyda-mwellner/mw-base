@@ -1,0 +1,17 @@
+<svg:g>
+  @for (shape of shapes(); track $index) {
+    @if ('points' in shape) {
+      <polygon [attr.points]="shape.points" [attr.fill]="shape.fill" [attr.stroke]="shape.stroke" />
+    } @else if ('d' in shape) {
+      <path [attr.d]="shape.d" [attr.stroke]="shape.stroke" />
+    } @else {
+      <circle
+        [attr.cx]="shape.cx"
+        [attr.cy]="shape.cy"
+        [attr.r]="shape.r"
+        [attr.fill]="shape.fill"
+        [attr.stroke]="shape.stroke"
+      />
+    }
+  }
+</svg:g>

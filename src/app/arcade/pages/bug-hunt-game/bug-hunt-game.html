@@ -1,0 +1,246 @@
+<app-game-frame
+  [unit]="unit"
+  rule="Bugs krabbeln aus dem Abfluss zum Server. Bau Türme neben den Kanal."
+  [state]="round.phase()"
+  [score]="round.score()"
+  [best]="round.best()"
+  [level]="round.level()"
+  [record]="round.record()"
+  [verdict]="round.verdict()"
+  [note]="note()"
+  [target]="round.target()"
+  [solved]="round.solved()"
+>
+  <svg class="bh-field" [attr.viewBox]="viewBox" aria-hidden="true">
+    <defs>
+      <clipPath id="bh-map">
+        <rect x="0" y="0" [attr.width]="map.width" [attr.height]="map.height" />
+      </clipPath>
+      <pattern id="bh-vents" width="4" height="4" patternUnits="userSpaceOnUse">
+        <circle cx="2" cy="2" r="0.8" fill="#151a2c" />
+      </pattern>
+      <radialGradient id="bh-coffee">
+        <stop offset="0" stop-color="#b58152" stop-opacity="0.28" />
+        <stop offset="1" stop-color="#b58152" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="bh-vignette" cx="50%" cy="50%" r="70%">
+        <stop offset="0.6" stop-color="#0b0e19" stop-opacity="0" />
+        <stop offset="1" stop-color="#0b0e19" stop-opacity="0.55" />
+      </radialGradient>
+    </defs>
+
+    <rect class="bh-bar" x="0" y="-18" [attr.width]="map.width" height="18" />
+    <circle class="bh-coin" cx="9" cy="-9" r="4.5" />
+    <text class="bh-status" x="17" y="-5">{{ status().bits }}</text>
+    <path
+      class="bh-heart"
+      [class.bh-heart-low]="status().low"
+      d="M58-11.5a2.4 2.4 0 0 1 4.5-1.2a2.4 2.4 0 0 1 4.5 1.2c0 2.6-4.5 5.3-4.5 5.3s-4.5-2.7-4.5-5.3z"
+    />
+    <text class="bh-status" [class.bh-lives-low]="status().low" x="70" y="-5">{{ status().lives }}</text>
+    <text class="bh-status bh-wave" [attr.x]="map.width - 6" y="-5">{{ status().wave }}</text>
+
+    <g clip-path="url(#bh-map)" [style.translate]="round.shake()">
+      <rect class="bh-floor" x="0" y="0" [attr.width]="map.width" [attr.height]="map.height" />
+      @for (tile of tiles; track $index) {
+        <rect class="bh-tile" [attr.x]="tile.x" [attr.y]="tile.y" width="22" height="22" />
+        @if (tile.vent) {
+          <rect fill="url(#bh-vents)" [attr.x]="tile.vent.x" [attr.y]="tile.vent.y" width="16" height="16" />
+        }
+        <path class="bh-tile-light" [attr.d]="tile.light" />
+      }
+
+      @for (tower of towers(); track tower.slot) {
+        @if (tower.reach) {
+          <circle fill="url(#bh-coffee)" [attr.r]="tower.reach" [attr.transform]="tower.transform" />
+        }
+      }
+
+      <polyline class="bh-duct-rim" [attr.points]="duct" />
+      <polyline class="bh-duct" [attr.points]="duct" />
+      <polyline class="bh-duct-bars" [attr.points]="duct" />
+      <polyline class="bh-cable" [attr.points]="duct" />
+      <polyline class="bh-cable-light" [attr.points]="duct" [attr.stroke-dashoffset]="flow()" />
+
+      <g [attr.transform]="drain">
+        <rect class="bh-drain" x="-2" y="-10" width="14" height="20" />
+        <path class="bh-drain-bars" d="M1-8v16M4.5-8v16M8-8v16" />
+      </g>
+
+      @for (slot of slots(); track slot.index) {
+        @if (slot.empty) {
+          <rect class="bh-slot" [attr.x]="slot.x" [attr.y]="slot.y" width="20" height="20" />
+        }
+      }
+
+      @for (tower of towers(); track tower.slot) {
+        <g [attr.transform]="tower.transform">
+          <ellipse class="bh-shadow" cx="1.5" cy="6" rx="11" ry="5" />
+          <rect class="bh-tower-front" x="-9" y="-2" width="18" height="9" [style.fill]="tower.color" />
+          <rect class="bh-tower-top" x="-9" y="-12" width="18" height="12" [style.fill]="tower.color" />
+          <rect class="bh-tower-light" x="-9" y="-12" width="18" height="1.5" />
+          @for (pip of tower.pips; track pip) {
+            <rect class="bh-pip" [attr.x]="pip" y="2.5" width="3" height="2" />
+          }
+          @switch (tower.kind) {
+            @case ('linter') {
+              <circle class="bh-turret" cy="-6" r="4" />
+              <g transform="translate(0 -6)">
+                <g [attr.transform]="tower.barrel">
+                  <rect class="bh-barrel" x="1" y="-1.3" width="8" height="2.6" />
+                </g>
+              </g>
+              <circle class="bh-turret-eye" cy="-6" r="1.4" />
+            }
+            @case ('test') {
+              <rect class="bh-screen" x="-6" y="-11" width="12" height="9" />
+              <path class="bh-check" d="M-3.5-6.5l2 2l4.5-4.5" />
+            }
+            @case ('kaffee') {
+              <rect class="bh-mug" x="-4" y="-9" width="6.5" height="6" />
+              <path class="bh-mug-handle" d="M2.5-8h1.8v3.5h-1.8" />
+              <g [attr.transform]="tower.steam">
+                <path class="bh-steam" d="M-2.5-10q-1-1.5 0-3M0.5-10q1-1.5 0-3" />
+              </g>
+            }
+            @case ('debugger') {
+              <circle class="bh-dish" cy="-6" r="5" />
+              <g transform="translate(0 -6)">
+                <path class="bh-sweep" [attr.transform]="tower.sweep" d="M0 0L5 0" />
+              </g>
+              <circle class="bh-dish-dot" cy="-6" r="1" />
+            }
+          }
+        </g>
+      }
+
+      @for (shot of shots(); track $index) {
+        @if (shot.ring !== null) {
+          <circle
+            class="bh-pulse"
+            [attr.cx]="shot.from.x"
+            [attr.cy]="shot.from.y"
+            [attr.r]="shot.ring"
+            [style.stroke]="shot.color"
+            [attr.opacity]="shot.fade"
+          />
+        } @else {
+          <line
+            class="bh-shot-glow"
+            [attr.x1]="shot.from.x"
+            [attr.y1]="shot.from.y"
+            [attr.x2]="shot.to.x"
+            [attr.y2]="shot.to.y"
+            [style.stroke]="shot.color"
+            [style.stroke-width]="shot.glow"
+            [attr.opacity]="shot.fade"
+          />
+          <line
+            class="bh-shot"
+            [attr.x1]="shot.from.x"
+            [attr.y1]="shot.from.y"
+            [attr.x2]="shot.to.x"
+            [attr.y2]="shot.to.y"
+            [style.stroke-width]="shot.wide"
+            [attr.opacity]="shot.fade"
+          />
+        }
+      }
+
+      @for (bug of bugs(); track bug.id) {
+        <g [attr.transform]="bug.transform">
+          <ellipse class="bh-shadow" cx="1" cy="2.5" [attr.rx]="bug.shadow.rx" [attr.ry]="bug.shadow.ry" />
+          <g [attr.transform]="bug.body">
+            <path
+              class="bh-legs"
+              [class.bh-legs-step]="bug.stride"
+              d="M-3-3.2l-1-2.4M0.5-3.4l0.6-2.4M3-3l1.4-2M-3 3.2l-1 2.4M0.5 3.4l0.6 2.4M3 3l1.4 2"
+            />
+            <ellipse class="bh-bug" rx="5" ry="3.5" [style.fill]="bug.color" />
+            @switch (bug.kind) {
+              @case ('kaefer') {
+                <path class="bh-shell-line" d="M-4.5 0h7" />
+              }
+              @case ('fork') {
+                <path class="bh-shell-line" d="M-3 0h2.5l2-2M-0.5 0l2 2" />
+              }
+              @case ('panzer') {
+                <path class="bh-plates" d="M-2.5-3.2v6.4M0.5-3.4v6.8" />
+              }
+              @case ('boss') {
+                <path class="bh-horns" d="M5.5-1.5l3-2M5.5 1.5l3 2" />
+              }
+            }
+            <ellipse class="bh-shine" cx="-1" cy="-1.5" rx="2.4" ry="1" />
+            <circle class="bh-bug-head" cx="5" r="2" />
+          </g>
+          @if (bug.bar; as bar) {
+            <rect class="bh-hp-track" [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.width" height="2" />
+            <rect
+              class="bh-hp"
+              [class.bh-hp-armor]="bug.armored"
+              [attr.x]="bar.x"
+              [attr.y]="bar.y"
+              [attr.width]="bar.left"
+              height="2"
+            />
+          }
+        </g>
+      }
+
+      <g [attr.transform]="server">
+        <ellipse class="bh-shadow" cx="9" cy="16" rx="13" ry="4" />
+        <rect class="bh-rack-side" x="14" y="-22" width="5" height="38" />
+        <rect class="bh-rack" x="0" y="-20" width="14" height="36" />
+        <rect class="bh-rack-light" x="0" y="-20" width="14" height="1.5" />
+        @for (led of rack(); track $index) {
+          <rect class="bh-rack-slot" x="2" [attr.y]="led.y" width="10" height="5" />
+          <rect
+            x="9"
+            [attr.y]="led.dot"
+            width="2"
+            height="2"
+            [style.fill]="led.color"
+            [attr.opacity]="led.opacity"
+          />
+        }
+      </g>
+
+      @if (round.phase() === 'playing') {
+        <circle class="bh-reach" [attr.cx]="cursor().x" [attr.cy]="cursor().y" [attr.r]="cursor().reach" />
+        <path class="bh-cursor" [attr.d]="cursor().frame" />
+      }
+      <rect fill="url(#bh-vignette)" x="0" y="0" [attr.width]="map.width" [attr.height]="map.height" />
+      @if (banner(); as banner) {
+        <g class="bh-banner">
+          <rect class="bh-banner-box" x="44" y="96" width="200" height="54" />
+          <text class="bh-banner-title" x="144" y="114">{{ banner.title }}</text>
+          <text class="bh-banner-text" x="144" y="128">{{ banner.what }}</text>
+          <text class="bh-banner-hint" x="144" y="142">{{ banner.hint }}</text>
+        </g>
+      }
+      <g app-game-fx [juice]="round.juice()" />
+    </g>
+
+    <rect class="bh-bar" x="0" [attr.y]="bottom.y" [attr.width]="map.width" height="28" />
+    @if (offer(); as offer) {
+      <text class="bh-offer" x="6" [attr.y]="bottom.text">{{ offer }}</text>
+    } @else {
+      @for (item of menu(); track item.kind) {
+        <g [attr.transform]="item.transform">
+          <rect
+            class="bh-chip"
+            [class.bh-chip-picked]="item.picked"
+            [class.bh-chip-poor]="!item.affordable"
+            [attr.width]="chip.width"
+            height="17"
+          />
+          <text class="bh-chip-key" x="4" y="12">{{ item.key }}</text>
+          <rect x="11" y="5.5" width="6" height="6" [style.fill]="item.color" />
+          <text class="bh-chip-label" x="20" y="12">{{ item.label }}</text>
+          <text class="bh-chip-price" [attr.x]="chip.price" y="12">{{ item.price }}</text>
+        </g>
+      }
+    }
+  </svg>
+</app-game-frame>

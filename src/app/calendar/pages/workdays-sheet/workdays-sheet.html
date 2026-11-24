@@ -1,0 +1,97 @@
+<h2 class="gm-plaque">
+  Arbeitstage
+  <span class="gm-plaque-note">KW {{ week() }} · heute mitgezählt</span>
+</h2>
+@for (period of periods(); track period.label) {
+  <section class="ws-period">
+    <div class="gm-meter" role="img" [attr.aria-label]="period.aria">
+      <span class="gm-meter-label">{{ period.title }}</span>
+      <span class="gm-meter-label">{{ period.percent }}</span>
+      <span class="gm-bar" [style.--gm-fill]="period.fill" style="--gm-segments: 20"></span>
+    </div>
+    <dl class="gm-stats ws-stats">
+      <div class="gm-stat">
+        <dt class="gm-stat-label">Mo - Fr</dt>
+        <dd class="gm-stat-value">{{ period.full }}</dd>
+      </div>
+      <div class="gm-stat">
+        <dt class="gm-stat-label">Mo - Do</dt>
+        <dd class="gm-stat-value">{{ period.mine }}</dd>
+      </div>
+      <div class="gm-stat">
+        <dt class="gm-stat-label">Netto</dt>
+        <dd class="gm-stat-value" data-tone="ok">{{ period.left }}</dd>
+        @if (period.away > 0) {
+          <dd class="gm-stat-note">{{ period.away }} Urlaub</dd>
+        }
+      </div>
+    </dl>
+  </section>
+}
+
+<h2 class="gm-plaque">Nächster Feiertag</h2>
+<div class="gm-banner" data-tone="info">
+  <p class="gm-banner-title">{{ holiday().title }}</p>
+  <p>{{ holiday().distance }}, in Baden-Württemberg</p>
+</div>
+
+<h2 class="gm-plaque">
+  Urlaub
+  <span class="gm-plaque-note">{{ rows().length }} eingetragen</span>
+</h2>
+@if (rows().length > 0) {
+  <ul class="gm-rows">
+    @for (row of rows(); track row.key) {
+      <li class="gm-row" [attr.aria-current]="row.editing">
+        <button type="button" class="gm-row-main" [attr.aria-label]="row.change" (click)="edit(row.vacation)">
+          <span class="gm-text">
+            <span class="gm-label">{{ row.label }}</span>
+            <span class="gm-note">{{ row.note }}</span>
+          </span>
+        </button>
+        <button
+          type="button"
+          class="gm-row-x"
+          tabindex="-1"
+          data-row-key="x"
+          [attr.aria-label]="row.drop"
+          (click)="remove(row.vacation)"
+        ></button>
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="gm-empty">Noch kein Urlaub eingetragen.</p>
+}
+
+<form class="gm-form ws-gap" (submit)="save(); $event.preventDefault()">
+  <label class="gm-row gm-field">
+    <span class="gm-text">
+      <span class="gm-label">{{ editing() ? 'Ändern' : 'Zeitraum' }}</span>
+      <span class="gm-note">21.12. - 6.1. oder ein Tag</span>
+    </span>
+    <input
+      #span
+      class="gm-slot"
+      type="text"
+      autocomplete="off"
+      aria-keyshortcuts="q"
+      [value]="draft()"
+      (input)="draft.set($any($event.target).value)"
+    />
+  </label>
+  @if (preview(); as preview) {
+    <p class="gm-hint ws-preview" [attr.data-tone]="preview.tone">{{ preview.text }}</p>
+  }
+  <button type="submit" class="gm-btn gm-btn-primary" [disabled]="busy()">
+    {{ editing() ? 'Ändern' : 'Eintragen' }}
+  </button>
+  @if (editing()) {
+    <button type="button" class="gm-btn" (click)="cancel()">Nicht ändern</button>
+  }
+</form>
+
+<p class="gm-hint">
+  Netto ist Mo - Do ohne Urlaub. Freitage und Feiertage kosten keinen Urlaubstag. Enter auf einem Urlaub
+  ändert ihn, X entfernt ihn.
+</p>

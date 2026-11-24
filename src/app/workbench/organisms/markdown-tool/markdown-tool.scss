@@ -1,0 +1,106 @@
+.mt-title {
+  margin: 0 0 var(--vl-space-2);
+  color: var(--vl-bright);
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  text-shadow: 2px 2px 0 var(--vl-edge);
+  text-transform: uppercase;
+}
+
+// A slot like those of the menus, only high enough to paste a text into.
+.mt-input {
+  display: block;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 7rem;
+  margin-block-start: var(--vl-space-4);
+  padding: var(--vl-space-3) var(--vl-space-4);
+  border: 2px solid var(--gm-frame);
+  border-radius: 0;
+  background: var(--gm-well);
+  box-shadow:
+    inset 0 2px 0 rgb(0 0 0 / 45%),
+    4px 4px 0 var(--vl-edge);
+  color: var(--gm-text);
+  caret-color: var(--gm-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+
+  &:focus {
+    border-color: var(--gm-accent);
+  }
+}
+
+.mt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vl-space-3) var(--vl-space-5);
+  align-items: center;
+  margin-block: var(--vl-space-5) 0;
+}
+
+.mt-find {
+  flex: 1;
+  min-inline-size: 24rem;
+}
+
+.mt-figures {
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  margin-block-start: var(--vl-space-4);
+}
+
+// The preview is what the text will look like elsewhere: on paper of its own, not in the colours of the menus.
+.mt-paper {
+  padding: var(--vl-space-6) var(--vl-space-5);
+  border: 2px solid var(--gm-frame);
+  background: var(--vl-card);
+  box-shadow:
+    var(--gm-lit),
+    4px 4px 0 var(--vl-edge);
+}
+
+.mt-source {
+  margin-block-start: var(--vl-space-6);
+
+  > summary {
+    cursor: pointer;
+    list-style: none;
+  }
+}
+
+.mt-code {
+  max-block-size: 24rem;
+  margin: 0;
+  padding: var(--vl-space-4);
+  overflow: auto;
+  border: 2px solid var(--gm-frame);
+  background: var(--gm-panel);
+  color: var(--gm-text);
+  font-size: 0.7rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+// The menu parts of the tool go a size down too: it is a page to work on, the text is what counts.
+.gm-hint {
+  font-size: 0.75rem;
+}
+
+.gm-btn-sm {
+  font-size: 1rem;
+}
+
+.gm-stat-value {
+  font-size: 1.7rem;
+}
+
+.gm-stat-label {
+  font-size: 0.9rem;
+}
+
+.gm-plaque {
+  font-size: 1.15rem;
+}

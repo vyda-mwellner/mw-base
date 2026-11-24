@@ -1,0 +1,358 @@
+// The page is all game: it fills the sheet, the field grows upwards over the ground it stands on.
+:host {
+  display: block;
+  block-size: 100%;
+}
+
+.bh-field {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.bh-bar {
+  fill: #111628;
+}
+
+.bh-status,
+.bh-offer,
+.bh-chip-label,
+.bh-chip-key,
+.bh-chip-price {
+  fill: #c9d2df;
+  font-family: var(--vl-font-pixel);
+  font-size: 11px;
+}
+
+.bh-coin {
+  fill: #f8cd3f;
+  stroke: #a77d12;
+  stroke-width: 1.2;
+}
+
+.bh-heart {
+  fill: #ef6a6a;
+}
+
+.bh-heart-low,
+.bh-lives-low {
+  fill: #ff3b3b;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: bh-alarm 0.6s steps(1) infinite;
+  }
+}
+
+@keyframes bh-alarm {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.bh-wave {
+  text-anchor: end;
+}
+
+// A raised floor of a server room: tiles with a light upper edge, some of them perforated for the air.
+.bh-floor {
+  fill: #1b2133;
+}
+
+.bh-tile {
+  fill: #2a3149;
+}
+
+.bh-tile-light {
+  fill: none;
+  stroke: #fff3d1;
+  stroke-width: 0.6;
+  opacity: 0.12;
+}
+
+.bh-duct-rim,
+.bh-duct,
+.bh-duct-bars,
+.bh-cable,
+.bh-cable-light {
+  fill: none;
+  stroke-linejoin: miter;
+}
+
+.bh-duct-rim {
+  stroke: #56627d;
+  stroke-width: 22;
+}
+
+.bh-duct {
+  stroke: #0d1020;
+  stroke-width: 18;
+}
+
+// Crossbars laid over the trench: a dash along the way is a bar across it.
+.bh-duct-bars {
+  stroke: #2b3350;
+  stroke-width: 18;
+  stroke-dasharray: 1.5 4.5;
+}
+
+.bh-cable {
+  stroke: #173a3a;
+  stroke-width: 3;
+}
+
+.bh-cable-light {
+  stroke: #4ade80;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 14;
+  opacity: 0.8;
+}
+
+.bh-drain {
+  fill: #0b0e19;
+  stroke: #56627d;
+  stroke-width: 1.5;
+}
+
+.bh-drain-bars {
+  fill: none;
+  stroke: #56627d;
+  stroke-width: 1.4;
+}
+
+.bh-rack {
+  fill: #2a334b;
+}
+
+.bh-rack-side {
+  fill: #1c2338;
+}
+
+.bh-rack-light {
+  fill: #fff3d1;
+  opacity: 0.35;
+}
+
+.bh-rack-slot {
+  fill: #151b2d;
+}
+
+.bh-slot {
+  fill: #323a55;
+  stroke: #5b6684;
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+
+.bh-shadow {
+  fill: #05070f;
+  opacity: 0.45;
+}
+
+// A tower is a block like the ones of the house: lit on top, its front in shadow.
+.bh-tower-top {
+  stroke: #15102e;
+  stroke-width: 0.8;
+}
+
+.bh-tower-front {
+  stroke: #15102e;
+  stroke-width: 0.8;
+  filter: brightness(0.62);
+}
+
+.bh-tower-light {
+  fill: #fff3d1;
+  opacity: 0.5;
+}
+
+.bh-pip {
+  fill: #fff3d1;
+}
+
+.bh-turret,
+.bh-barrel {
+  fill: #2a334b;
+}
+
+.bh-turret-eye {
+  fill: #ff6b5a;
+}
+
+.bh-screen {
+  fill: #12312a;
+  stroke: #15102e;
+  stroke-width: 0.6;
+}
+
+.bh-check {
+  fill: none;
+  stroke: #86efac;
+  stroke-width: 1.8;
+  stroke-linecap: square;
+}
+
+.bh-mug {
+  fill: #f3ebd7;
+}
+
+.bh-mug-handle,
+.bh-steam {
+  fill: none;
+  stroke: #f3ebd7;
+  stroke-width: 1;
+}
+
+.bh-steam {
+  opacity: 0.75;
+}
+
+.bh-dish {
+  fill: #12283a;
+  stroke: #c4f6ff;
+  stroke-width: 0.8;
+}
+
+.bh-sweep {
+  stroke: #c4f6ff;
+  stroke-width: 1.2;
+}
+
+.bh-dish-dot {
+  fill: #c4f6ff;
+}
+
+.bh-pulse {
+  fill: none;
+  stroke-width: 2;
+}
+
+.bh-shot-glow {
+  stroke-linecap: round;
+  opacity: 0.3;
+}
+
+.bh-shot {
+  stroke: #fffbea;
+  stroke-linecap: round;
+}
+
+.bh-legs {
+  fill: none;
+  stroke: #15102e;
+  stroke-width: 1;
+}
+
+// Two poses, one step apart: the legs swap as the bug crawls on.
+.bh-legs-step {
+  transform: scaleX(-1);
+}
+
+.bh-bug {
+  stroke: #15102e;
+  stroke-width: 0.8;
+}
+
+.bh-shell-line,
+.bh-plates,
+.bh-horns {
+  fill: none;
+  stroke: #15102e;
+  stroke-width: 0.8;
+}
+
+.bh-horns {
+  stroke: #f3ebd7;
+  stroke-width: 1.2;
+}
+
+.bh-shine {
+  fill: #fff3d1;
+  opacity: 0.35;
+}
+
+.bh-bug-head {
+  fill: #15102e;
+}
+
+.bh-hp-track {
+  fill: #15102e;
+}
+
+.bh-hp {
+  fill: #4ade80;
+}
+
+.bh-hp-armor {
+  fill: #a5b3c7;
+}
+
+.bh-reach {
+  fill: #fff3d1;
+  fill-opacity: 0.05;
+  stroke: #fff3d1;
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+  stroke-opacity: 0.5;
+}
+
+.bh-cursor {
+  fill: none;
+  stroke: #f8cd3f;
+  stroke-width: 2;
+}
+
+.bh-banner-box {
+  fill: #0b0e19;
+  fill-opacity: 0.82;
+  stroke: #f8cd3f;
+  stroke-width: 1;
+}
+
+.bh-banner-title,
+.bh-banner-text,
+.bh-banner-hint {
+  font-family: var(--vl-font-pixel);
+  text-anchor: middle;
+}
+
+.bh-banner-title {
+  fill: #f8cd3f;
+  font-size: 13px;
+}
+
+.bh-banner-text {
+  fill: #c9d2df;
+  font-size: 9px;
+}
+
+.bh-banner-hint {
+  fill: #4ade80;
+  font-size: 10px;
+}
+
+.bh-chip {
+  fill: #1a2140;
+  stroke: #2a364c;
+}
+
+.bh-chip-picked {
+  stroke: #f8cd3f;
+  stroke-width: 2;
+}
+
+.bh-chip-poor {
+  opacity: 0.5;
+}
+
+.bh-chip-key {
+  fill: #f8cd3f;
+}
+
+.bh-chip-label {
+  font-size: 10px;
+}
+
+.bh-chip-price {
+  font-size: 10px;
+  text-anchor: end;
+}

@@ -1,0 +1,74 @@
+<h2 class="gm-plaque">Heute</h2>
+<dl class="gm-stats">
+  @for (fact of day().facts; track fact.label) {
+    <div class="gm-stat">
+      <dt class="gm-stat-label">{{ fact.label }}</dt>
+      <dd class="gm-stat-value">{{ fact.value }}</dd>
+    </div>
+  }
+</dl>
+
+<h2 class="gm-plaque fs-gap">Läuft noch</h2>
+@if (calm()) {
+  <p class="gm-empty">Keine Stacks, Dev-Server oder Forwards. Alles aus.</p>
+} @else {
+  <ul class="gm-rows">
+    @for (stack of stacks(); track stack.name) {
+      <li class="gm-row">
+        <span class="gm-led" data-tone="ok" aria-hidden="true"></span>
+        <span class="gm-text">
+          <span class="gm-label">{{ stack.name }}</span>
+          <span class="gm-note">{{ stack.note }}</span>
+        </span>
+        <span class="gm-tag">Stack</span>
+      </li>
+    }
+    @for (server of servers(); track server.id) {
+      <li class="gm-row">
+        <span class="gm-led" data-tone="ok" aria-hidden="true"></span>
+        <span class="gm-text">
+          <span class="gm-label">{{ server.label }}</span>
+          <span class="gm-note">{{ server.note }}</span>
+        </span>
+        <span class="gm-tag">Dev-Server</span>
+      </li>
+    }
+    @for (forward of forwards(); track forward.key) {
+      <li class="gm-row">
+        <span class="gm-led" data-tone="ok" aria-hidden="true"></span>
+        <span class="gm-text">
+          <span class="gm-label">{{ forward.label }}</span>
+          <span class="gm-note">{{ forward.note }}</span>
+        </span>
+        <span class="gm-tag">Forward</span>
+      </li>
+    }
+  </ul>
+  <div class="fs-actions">
+    @if (stacks().length > 0) {
+      <button type="button" class="gm-btn" [disabled]="stopping()" (click)="stopStacks()">
+        {{ stopStacksLabel() }}
+      </button>
+    }
+    @if (servers().length > 0) {
+      <button type="button" class="gm-btn" (click)="stopServers()">Alle Dev-Server stoppen</button>
+    }
+    @if (forwards().length > 0) {
+      <button type="button" class="gm-btn" (click)="stopForwards()">Alle Forwards stoppen</button>
+    }
+  </div>
+}
+
+<h2 class="gm-plaque fs-gap">Als Nächstes</h2>
+@if (day().nextWorkday; as next) {
+  <div class="gm-banner" data-tone="info">
+    <p class="gm-banner-title">{{ next }}</p>
+    <p>{{ day().quarter }}</p>
+  </div>
+} @else {
+  <p class="gm-empty">{{ day().quarter }}</p>
+}
+
+<p class="gm-hint">
+  W und S wählen einen Knopf, Enter drückt ihn. Ohne Knopf fährt Enter los und schließt Base, Esc bleibt noch.
+</p>

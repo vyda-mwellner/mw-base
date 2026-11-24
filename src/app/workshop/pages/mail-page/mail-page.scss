@@ -1,0 +1,26 @@
+.mp-fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--vl-space-1) var(--vl-space-4);
+  margin: 0 0 var(--vl-space-4);
+
+  dt {
+    color: var(--gm-muted);
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+// Mails are written for a light client, so the frame is one, whatever the house looks like.
+.mp-body {
+  display: block;
+  inline-size: 100%;
+  min-block-size: 12rem;
+  margin-block-start: var(--vl-space-4);
+  border: 2px solid var(--gm-frame);
+  background: #fff;
+  color-scheme: light;
+}

@@ -1,0 +1,11 @@
+.rv-dial {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--vl-space-2);
+  margin-block: var(--vl-space-3);
+
+  > .gm-label {
+    margin-inline-end: var(--vl-space-2);
+  }
+}

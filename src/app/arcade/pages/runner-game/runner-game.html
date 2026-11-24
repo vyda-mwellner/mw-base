@@ -1,0 +1,56 @@
+<app-game-frame
+  [unit]="unit"
+  rule="Spring über die Kartons. Unter den Rohren bleibst du unten."
+  [state]="round.phase()"
+  [score]="round.score()"
+  [best]="round.best()"
+  [level]="round.level()"
+  [record]="round.record()"
+  [verdict]="round.verdict()"
+  [note]="note()"
+  [combo]="combo()"
+  [target]="round.target()"
+  [solved]="round.solved()"
+>
+  <svg class="rg-field" viewBox="-50 -300 300 330" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+    <defs>
+      <linearGradient id="rg-wall-light" gradientUnits="userSpaceOnUse" x1="0" y1="-262" x2="0" y2="-12">
+        <stop offset="0" stop-color="#2f2557" />
+        <stop offset="1" stop-color="#4b3a7c" />
+      </linearGradient>
+      <radialGradient id="rg-lamp-glow">
+        <stop offset="0" stop-color="#fff3d1" stop-opacity="0.22" />
+        <stop offset="1" stop-color="#fff3d1" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <rect fill="url(#rg-wall-light)" x="-600" y="-1300" width="1500" height="1290" />
+    <path class="rg-bricks" [attr.d]="bricks" />
+    @for (bay of wall(); track $index) {
+      <rect class="rg-pillar" [attr.x]="bay.pillar" y="-270" width="20" height="258" />
+      <rect class="rg-pillar-light" [attr.x]="bay.pillar" y="-270" width="2" height="258" />
+      <ellipse fill="url(#rg-lamp-glow)" [attr.cx]="bay.glow" cy="-172" rx="58" ry="46" />
+      <rect class="rg-lamp" [attr.x]="bay.lamp" y="-182" width="18" height="7" />
+    }
+    <rect class="rg-ceiling" x="-600" y="-1300" width="1500" height="1038" />
+    <path class="rg-ceiling-edge" d="M-600 -262.5h1500" />
+    <path class="rg-pipe" d="M-600-252h1500" />
+    <path class="rg-pipe-light" d="M-600-253.5h1500" />
+    <g [style.translate]="round.shake()">
+      <polygon class="rg-floor-back" points="-600,0 900,0 915,-12 -585,-12" />
+      <rect class="rg-floor" x="-600" y="0" width="1500" height="200" />
+      <path class="rg-floor-edge" d="M-600 0.5h1500" />
+      <g app-solids [parts]="floor()" />
+      <g app-solids [parts]="flag()" />
+      <g app-solids [parts]="crates()" />
+      <ellipse class="rg-shade" cx="6" cy="-4.8" [attr.rx]="shade()" ry="3" />
+      <g
+        app-figure
+        [move]="move()"
+        [beat]="strides()"
+        [style.translate]="runner().translate"
+        [style.scale]="runner().scale"
+      />
+      <g app-game-fx [juice]="round.juice()" />
+    </g>
+  </svg>
+</app-game-frame>

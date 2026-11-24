@@ -1,0 +1,5 @@
+<svg:g>
+  @for (layer of layers(); track layer.key) {
+    <g app-solids [class.vl-face]="layer.face" [parts]="layer.parts" [attr.transform]="layer.transform" />
+  }
+</svg:g>

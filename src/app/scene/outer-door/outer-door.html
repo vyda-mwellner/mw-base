@@ -1,0 +1,28 @@
+<svg:polygon class="vl-doorway" [attr.points]="doorway" />
+<svg:g [attr.transform]="hinge">
+  <g class="vl-swing" [class.vl-swing-open]="open()" [style.--vl-out]="out()">
+    <rect
+      [attr.y]="-leaf.height"
+      [attr.width]="leaf.width"
+      [attr.height]="leaf.height"
+      [attr.fill]="wood()"
+      [attr.stroke]="edge()"
+    />
+    <rect
+      [attr.x]="leaf.pane.x"
+      [attr.y]="-leaf.pane.top"
+      [attr.width]="leaf.pane.width"
+      [attr.height]="leaf.pane.height"
+      [attr.fill]="glass()"
+      [attr.stroke]="edge()"
+    />
+    <path [attr.d]="leaf.rim" [attr.stroke]="lit()" />
+    <rect
+      class="vl-swing-shade"
+      [attr.y]="-leaf.height"
+      [attr.width]="leaf.width"
+      [attr.height]="leaf.height"
+    />
+    <rect class="vl-knob" [attr.x]="leaf.knob.x" [attr.y]="-leaf.knob.top" width="2" height="5" />
+  </g>
+</svg:g>

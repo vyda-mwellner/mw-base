@@ -1,0 +1,15 @@
+<div #body class="wb-body" tabindex="-1">
+  @if (desk()?.kind === 'markdown') {
+    <app-markdown-tool />
+  } @else if (desk()?.kind === 'befehl') {
+    <app-command-sheet />
+  } @else if (desk()?.kind === 'feierabend') {
+    <app-farewell-sheet />
+  } @else if (desk()?.kind === 'note') {
+    <app-note-view />
+  } @else if (desk()?.kind === 'picture') {
+    <app-picture-view />
+  } @else {
+    <app-report-view />
+  }
+</div>

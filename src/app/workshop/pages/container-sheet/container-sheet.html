@@ -1,0 +1,113 @@
+@if (error(); as error) {
+  <div class="gm-banner" data-tone="danger">
+    <p class="gm-banner-title">Docker antwortet nicht</p>
+    <p>{{ error }}</p>
+  </div>
+}
+
+<h2 class="gm-plaque">
+  Stacks
+  <span class="gm-plaque-note">{{ runningCount() }} laufen</span>
+</h2>
+@if (rows().length > 0) {
+  <ul class="gm-rows">
+    @for (row of rows(); track row.name) {
+      <li class="gm-row">
+        <button type="button" class="gm-row-main" [attr.aria-label]="row.action" (click)="primary(row)">
+          <span class="gm-led" [attr.data-tone]="row.tone" aria-hidden="true"></span>
+          <span class="gm-text">
+            <span class="gm-label">{{ row.name }}</span>
+            <span class="gm-note" [attr.data-tone]="row.noteTone">{{ row.note }}</span>
+          </span>
+          @if (row.isDefault) {
+            <span class="gm-tag">Standard</span>
+          }
+          <span class="gm-value">{{ row.value }}</span>
+        </button>
+        @if (row.running) {
+          <button
+            type="button"
+            class="gm-row-x"
+            tabindex="-1"
+            data-row-key="x"
+            [attr.aria-label]="row.stop"
+            (click)="stop(row)"
+          ></button>
+        }
+      </li>
+    }
+  </ul>
+} @else if (!error()) {
+  <p class="gm-empty">{{ loading() ? 'Wird gelesen ...' : 'Keine Stacks in local-setup.' }}</p>
+}
+
+<div class="cs-actions">
+  <button type="button" class="gm-btn gm-btn-primary" aria-keyshortcuts="q" (click)="startDefaults()">
+    Standard starten
+  </button>
+  <button type="button" class="gm-btn" aria-keyshortcuts="e" (click)="stopAll()">{{ stopAllLabel() }}</button>
+</div>
+
+@if (log().length > 0 || runError()) {
+  <h2 class="gm-plaque">
+    Setup-Ausgabe
+    <span class="gm-plaque-note">{{ logState() }}</span>
+  </h2>
+  <pre
+    #output
+    class="cs-log"
+    role="log"
+    tabindex="0"
+    data-scroll
+    aria-label="Setup-Ausgabe"
+    (scroll)="scrolled(output)"
+  >@for (line of log(); track line.seq) {<span [attr.data-stream]="line.stream">{{ line.text }}</span>
+}</pre>
+  @if (runError(); as failure) {
+    <div class="gm-banner cs-gap" data-tone="danger">
+      <p class="gm-banner-title">Abgebrochen</p>
+      <p>{{ failure }}</p>
+    </div>
+  }
+  @if (!busy()) {
+    <button type="button" class="gm-btn cs-gap" (click)="closeLog()">Ausgabe schließen</button>
+  }
+}
+
+@if (services().length > 0) {
+  <h2 class="gm-plaque">Weitere Dienste</h2>
+  <ul class="gm-rows">
+    @for (service of services(); track service.id) {
+      <li class="gm-row">
+        <span class="gm-led" [attr.data-tone]="service.tone" aria-hidden="true"></span>
+        <span class="gm-text">
+          <span class="gm-label">{{ service.label }}</span>
+          <span class="gm-note">{{ service.note }}</span>
+        </span>
+      </li>
+    }
+  </ul>
+}
+
+@if (others().length > 0) {
+  <h2 class="gm-plaque">
+    Weitere Container
+    <span class="gm-plaque-note">{{ others().length }}</span>
+  </h2>
+  <ul class="gm-rows">
+    @for (container of others(); track container.id) {
+      <li class="gm-row">
+        <span class="gm-led" data-tone="ok" aria-hidden="true"></span>
+        <span class="gm-text">
+          <span class="gm-label">{{ container.name }}</span>
+          <span class="gm-note">{{ container.note }}</span>
+        </span>
+      </li>
+    }
+  </ul>
+}
+
+<p class="gm-hint">
+  Enter startet einen Stack oder startet ihn neu, zweimal X stoppt ihn. Die Container haben keine Volumes:
+  Stoppen und Neustarten nehmen ihre Daten mit. Ein Lauf geht weiter, auch wenn das Blatt zu ist.
+</p>

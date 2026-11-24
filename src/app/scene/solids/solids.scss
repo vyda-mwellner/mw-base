@@ -1,0 +1,14 @@
+polygon,
+circle {
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+path {
+  fill: none;
+  stroke-width: 0.8;
+}
+
+circle[fill='none'] {
+  stroke-width: 2;
+}

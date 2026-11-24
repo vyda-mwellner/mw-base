@@ -1,0 +1,456 @@
+.vl-scene {
+  display: block;
+  flex: none;
+  inline-size: 100%;
+  overflow: hidden;
+  transition: height var(--vl-duration-zoom) var(--vl-ease-in-out);
+}
+
+.vl-camera {
+  transition:
+    translate var(--vl-duration-zoom) var(--vl-ease-in-out),
+    scale var(--vl-duration-zoom) var(--vl-ease-in-out);
+}
+
+.vl-ground-dark,
+.vl-ground-light {
+  fill: none;
+  stroke-width: 0.6;
+}
+
+.vl-ground-dark {
+  stroke: var(--vl-ink);
+  opacity: 0.26;
+}
+
+.vl-ground-light {
+  stroke: var(--vl-light);
+  opacity: 0.35;
+}
+
+.vl-lift-leaf {
+  fill: #a8d4f0;
+  fill-opacity: 0.22;
+  stroke: #c9d6e6;
+  stroke-width: 0.8;
+  transition: translate 0.5s var(--vl-ease-in-out);
+}
+
+.vl-floor-sign {
+  fill: #566375;
+  font-family: var(--vl-font-pixel);
+  font-size: 15px;
+  text-anchor: middle;
+  transition: fill var(--vl-duration-slow) var(--vl-ease-out);
+}
+
+.vl-floor-sign-lit {
+  fill: #ffe08a;
+}
+
+// As dark as the inside of the shaft above it.
+.vl-pit {
+  fill: #141d30;
+}
+
+.vl-weight {
+  transition: translate 0.05s linear;
+}
+
+// The star field is drawn twice side by side, so it can drift by its own width without a gap. Sky and clouds
+// move a whole unit at a time, as pixels do: a few repaints a second instead of one every frame.
+.vl-stars {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-drift 420s steps(600) infinite;
+  }
+}
+
+.vl-clouds {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-pass 420s steps(1540) infinite;
+  }
+}
+
+.vl-clouds-more {
+  animation-delay: -130s;
+}
+
+.vl-fall {
+  fill: none;
+  stroke: #9db4d0;
+  stroke-width: 1;
+  opacity: 0.7;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-fall 0.5s linear infinite;
+  }
+}
+
+.vl-fall-snow {
+  fill: #f1f5f9;
+  stroke: none;
+  opacity: 0.9;
+  animation-duration: 2.6s;
+}
+
+.vl-fan {
+  fill: none;
+  stroke: #9aa8ba;
+  stroke-width: 1.4;
+  transform-box: fill-box;
+  transform-origin: center;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-spin 1.8s steps(8) infinite;
+  }
+}
+
+// Lights, not paint: the night does not darken them.
+.vl-thermo {
+  fill: #ffb02e;
+  font-family: var(--vl-font-pixel);
+  font-size: 17px;
+  text-anchor: end;
+}
+
+// A bird is out of the picture most of its round and crosses it in the first part.
+.vl-bird {
+  translate: -60px 0;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation-name: vl-fly;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+}
+
+.vl-wing {
+  fill: #1c2438;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-flap 0.4s steps(1) infinite;
+  }
+}
+
+.vl-wing-down {
+  opacity: 0;
+  animation-delay: -0.2s;
+}
+
+@keyframes vl-fly {
+  0% {
+    translate: -60px 0;
+  }
+
+  16% {
+    translate: 1200px -34px;
+  }
+
+  100% {
+    translate: 1200px -34px;
+  }
+}
+
+@keyframes vl-flap {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.vl-lantern {
+  opacity: 0;
+  transition: opacity var(--vl-duration-slow) var(--vl-ease-out);
+}
+
+.vl-lantern-on {
+  opacity: 1;
+}
+
+// It sits most of the time, and now and then hops a step aside and back.
+.vl-critter {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-hop 9s steps(1) infinite;
+
+    &:nth-of-type(2n) {
+      animation-duration: 13s;
+      animation-delay: -4s;
+    }
+
+    &:nth-of-type(3n) {
+      animation-duration: 7s;
+      animation-delay: -2s;
+    }
+  }
+}
+
+@keyframes vl-hop {
+  0% {
+    translate: 0 0;
+  }
+
+  40% {
+    translate: 2px -2px;
+  }
+
+  43% {
+    translate: 4px 0;
+  }
+
+  70% {
+    translate: 2px -2px;
+  }
+
+  73% {
+    translate: 0 0;
+  }
+
+  86% {
+    translate: 0 -1px;
+  }
+
+  89% {
+    translate: 0 0;
+  }
+}
+
+.vl-solar {
+  stroke: #0d1422;
+}
+
+.vl-solar-grid {
+  fill: none;
+  stroke: #7fa6ee;
+  stroke-width: 0.6;
+}
+
+.vl-beacon {
+  fill: #2a364c;
+
+  &[data-tone='danger'] {
+    fill: var(--vl-danger);
+  }
+
+  &[data-tone='warning'] {
+    fill: var(--vl-warning);
+  }
+
+  &[data-tone='info'] {
+    fill: var(--vl-info);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &[data-tone] {
+      animation: vl-blink 2s steps(1) infinite;
+    }
+  }
+}
+
+@keyframes vl-drift {
+  to {
+    translate: -600px;
+  }
+}
+
+@keyframes vl-pass {
+  from {
+    translate: -340px;
+  }
+
+  to {
+    translate: 1200px;
+  }
+}
+
+.vl-solar-lit {
+  stroke: #8fb0e6;
+}
+
+@keyframes vl-fall {
+  to {
+    translate: -12px 48px;
+  }
+}
+
+@keyframes vl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vl-blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.vl-reach {
+  fill: none;
+  stroke: var(--vl-light);
+  stroke-width: 1.6;
+  stroke-linecap: square;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-reach 0.9s steps(2) infinite;
+  }
+}
+
+@keyframes vl-reach {
+  50% {
+    stroke: #ffd35a;
+  }
+}
+
+.vl-mark {
+  --vl-mark: var(--vl-info);
+
+  &[data-tone='warning'] {
+    --vl-mark: var(--vl-warning);
+  }
+
+  &[data-tone='danger'] {
+    --vl-mark: var(--vl-danger);
+  }
+
+  rect,
+  .vl-mark-body {
+    fill: var(--vl-mark);
+    stroke: var(--vl-ink);
+  }
+
+  .vl-mark-light {
+    fill: none;
+    stroke: var(--vl-light);
+    opacity: 0.6;
+  }
+
+  .vl-mark-sign {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-linecap: square;
+  }
+}
+
+.vl-mark .vl-mark-ring {
+  stroke: none;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-mark-pulse 1.8s steps(6) infinite;
+  }
+}
+
+@keyframes vl-mark-pulse {
+  from {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+// The windows of the pipe are lit from inside: no night darkens them.
+.vl-gauge-label,
+.vl-gauge-value {
+  font-family: var(--vl-font-pixel);
+  text-transform: uppercase;
+}
+
+.vl-gauge-label {
+  fill: #8fa0bd;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+}
+
+.vl-gauge-value {
+  fill: #ffe08a;
+  font-size: 17px;
+  text-anchor: end;
+}
+
+.vl-gauge-done {
+  fill: #4ade80;
+}
+
+.vl-gauge-track {
+  fill: #2a334b;
+}
+
+.vl-gauge-fill {
+  fill: #ffe08a;
+}
+
+.vl-rocket {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-rocket 1.6s steps(4) infinite;
+
+    &:nth-of-type(2n) {
+      animation-delay: -0.8s;
+    }
+  }
+}
+
+@keyframes vl-rocket {
+  75% {
+    opacity: 0;
+  }
+}
+
+// A mark jumped at bursts into bits; without motion it is simply gone.
+.vl-pop-bit {
+  fill: var(--vl-info);
+  stroke: var(--vl-ink);
+  stroke-width: 0.6;
+  opacity: 0;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-pop 0.45s ease-out;
+  }
+}
+
+@keyframes vl-pop {
+  from {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  to {
+    opacity: 0;
+    translate: var(--vl-dx) var(--vl-dy);
+  }
+}
+
+// The name of the company on its pillar and on the canopy over the door: white, in the pixel font.
+.vl-sign,
+.vl-fascia {
+  fill: #f3ebd7;
+  font-family: var(--vl-font-pixel);
+  text-anchor: middle;
+}
+
+.vl-bay {
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.vl-fascia {
+  font-size: 6.5px;
+}
+
+// The name of a room on the cut edge of the ceiling above it: nothing in the room can stand in front of it.
+.vl-room-name {
+  fill: #f3ebd7;
+  font-family: var(--vl-font-pixel);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

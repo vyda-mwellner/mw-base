@@ -1,0 +1,113 @@
+// Over the sheet, right above the bar of keys; with no bar (a game) down at the edge of the device.
+:host {
+  position: absolute;
+  inset-inline: var(--vl-space-5);
+  inset-block-end: calc(2.375rem + 3px + var(--vl-space-4));
+  z-index: 30;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--vl-space-3);
+  pointer-events: none;
+}
+
+:host(.ts-low) {
+  inset-block-end: var(--vl-space-4);
+}
+
+.ts-toast {
+  --ts-tone: var(--gm-ok);
+
+  padding: var(--vl-space-3) var(--vl-space-4);
+  border: 2px solid var(--gm-frame);
+  border-inline-start: 6px solid var(--ts-tone);
+  background: var(--gm-panel);
+  box-shadow:
+    var(--gm-lit),
+    var(--gm-foot),
+    4px 4px 0 var(--vl-edge);
+  pointer-events: auto;
+  cursor: pointer;
+
+  &[data-tone='info'] {
+    --ts-tone: var(--vl-info);
+  }
+
+  &[data-tone='warning'] {
+    --ts-tone: var(--vl-warning);
+  }
+
+  &[data-tone='error'] {
+    --ts-tone: var(--vl-danger);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ts-in 0.18s steps(3) both;
+  }
+}
+
+// As long as `closingMs` of the toasts, after which the service takes it away.
+.ts-closing {
+  opacity: 0;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ts-out 0.3s steps(3) both;
+  }
+}
+
+.ts-title {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-3);
+  margin: 0;
+  color: var(--vl-bright);
+  font-family: var(--vl-font-pixel);
+  font-size: 1.2rem;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    flex: none;
+    inline-size: 0.45rem;
+    block-size: 0.45rem;
+    background: var(--ts-tone);
+    box-shadow: 1px 1px 0 var(--vl-edge);
+  }
+}
+
+// An error stays until it is put away: the key for that sits at the end of its title.
+.ts-key {
+  margin-inline-start: auto;
+  font-size: 0.8rem;
+  text-transform: none;
+}
+
+// Line breaks are the caller's: the backup lists one failure per line.
+.ts-text {
+  margin: var(--vl-space-1) 0 0;
+  color: var(--gm-muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+@keyframes ts-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+
+@keyframes ts-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+}

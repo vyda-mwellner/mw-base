@@ -1,0 +1,13 @@
+@if (page()) {
+  <div class="wb-picture" [innerHTML]="drawing()"></div>
+  <button
+    type="button"
+    class="gm-btn gm-btn-primary pv-copy"
+    aria-keyshortcuts="q"
+    [disabled]="task.busy()"
+    (click)="copy()"
+  >
+    Als Bild kopieren
+  </button>
+  <p class="gm-hint">Als PNG in der Zwischenablage, zum Einfügen in Teams, Outlook oder Confluence.</p>
+}

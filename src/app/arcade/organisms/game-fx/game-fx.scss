@@ -1,0 +1,28 @@
+.gx-speck {
+  stroke: var(--vl-ink);
+  stroke-width: 0.5;
+}
+
+.gx-popup {
+  fill: #f3ebd7;
+  stroke: var(--vl-ink);
+  stroke-width: 3px;
+  paint-order: stroke;
+  font-family: var(--vl-font-pixel);
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  text-anchor: middle;
+
+  &[data-tone='gold'] {
+    fill: #f8cd3f;
+  }
+
+  &[data-tone='bad'] {
+    fill: #ef4444;
+  }
+}
+
+.gx-flash {
+  fill: var(--vl-light);
+  pointer-events: none;
+}

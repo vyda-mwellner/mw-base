@@ -1,0 +1,36 @@
+<div class="vl-island">
+  <div class="vl-island-pill" [class.vl-island-quiet]="quiet()" [attr.aria-busy]="busy()">
+    @if (working(); as task) {
+      <span class="vl-island-dot vl-island-dot-busy"></span>
+      <span class="vl-island-text" role="status">{{ task }}</span>
+      <span class="vl-island-bar"></span>
+    } @else if (top(); as notice) {
+      <span class="vl-island-dot" [attr.data-tone]="notice.tone"></span>
+      <span class="vl-island-text">{{ notice.thing.label }}: {{ notice.text }}</span>
+      @if (more() > 0) {
+        <span class="vl-island-more">+{{ more() }}</span>
+      }
+    } @else {
+      <span class="vl-island-dot"></span>
+      <span class="vl-island-text">{{ calm() }}</span>
+    }
+  </div>
+  @if (expanded()) {
+    <ul class="vl-island-list" aria-label="Meldungen">
+      @for (row of rows(); track row.key; let index = $index) {
+        <li
+          class="vl-island-row gm-row"
+          [attr.aria-current]="index === current() ? 'true' : null"
+          (click)="picked.emit(row.notice)"
+        >
+          <span class="vl-island-dot" [attr.data-tone]="row.notice.tone"></span>
+          <span class="vl-island-text">
+            <strong>{{ row.notice.thing.label }}</strong>
+            {{ row.notice.text }}
+          </span>
+          <span class="vl-island-room">{{ row.notice.room.label }}</span>
+        </li>
+      }
+    </ul>
+  }
+</div>

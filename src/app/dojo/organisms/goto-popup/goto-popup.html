@@ -1,0 +1,23 @@
+<div class="gp-popup" role="dialog" [attr.aria-label]="title()">
+  <p class="gp-title">{{ title() }}</p>
+  <input
+    #field
+    class="gp-field"
+    type="text"
+    aria-label="Name"
+    autocomplete="off"
+    spellcheck="false"
+    [value]="query()"
+    (input)="typed($event)"
+    (keydown)="key($event)"
+  />
+  <ul class="gp-list" role="listbox">
+    @for (row of rows(); track row.file) {
+      <li class="gp-row" role="option" [attr.aria-selected]="row.on" [class.gp-on]="row.on">
+        {{ row.file }}
+      </li>
+    } @empty {
+      <li class="gp-row gp-none">Nichts gefunden</li>
+    }
+  </ul>
+</div>

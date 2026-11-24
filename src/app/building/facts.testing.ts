@@ -1,0 +1,27 @@
+import type { Facts } from './facts';
+
+export const NO_FACTS: Facts = {
+  live: [],
+  alarm: false,
+  record: 0,
+  scores: [],
+  mails: 0,
+  week: 1,
+  workdays: [],
+  keys: [],
+  servers: [],
+  dojo: 0,
+  envs: [],
+  forwards: [],
+  databases: [],
+  trains: [],
+  books: 0,
+  inbox: 0,
+  backedUp: true,
+  flows: [],
+  usage: 0,
+  movement: [],
+  solar: 0,
+  season: null,
+  brand: '',
+};

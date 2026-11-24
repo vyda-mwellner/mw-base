@@ -1,0 +1,61 @@
+<div class="gm-form">
+  <label class="gm-row gm-field">
+    <span class="gm-text">
+      <span class="gm-label">Filter</span>
+      <span class="gm-note">Betreff oder Adresse</span>
+    </span>
+    <input
+      class="gm-slot"
+      type="text"
+      autocomplete="off"
+      aria-keyshortcuts="q"
+      [value]="filter()"
+      (input)="filter.set($any($event.target).value)"
+    />
+  </label>
+</div>
+
+@if (error(); as error) {
+  <div class="gm-banner ms-gap" data-tone="danger">
+    <p class="gm-banner-title">Greenmail antwortet nicht</p>
+    <p>{{ error }}</p>
+  </div>
+}
+
+<h2 class="gm-plaque">
+  Mails
+  <span class="gm-plaque-note">{{ count() }}</span>
+</h2>
+@if (rows().length > 0) {
+  <ul class="gm-rows">
+    @for (row of rows(); track row.id) {
+      <li class="gm-row">
+        <button type="button" class="gm-row-main" [routerLink]="[row.id]">
+          <span class="gm-text">
+            <span class="gm-label">{{ row.subject }}</span>
+            <span class="gm-note">{{ row.note }}</span>
+          </span>
+          @if (row.attachments) {
+            <span class="gm-tag">{{ row.attachments }}</span>
+          }
+        </button>
+      </li>
+    }
+  </ul>
+} @else if (loading()) {
+  <p class="gm-empty">Greenmail wird gefragt ...</p>
+} @else if (total() > 0) {
+  <p class="gm-empty">Keine Mail passt zum Filter.</p>
+} @else if (!error()) {
+  <p class="gm-empty">Noch keine Mails. Was die Apps auf diesem Rechner verschicken, landet hier.</p>
+}
+
+@if (total() > 0) {
+  <button type="button" class="gm-btn ms-gap" aria-keyshortcuts="e" (click)="purge()">
+    {{ purgeLabel() }}
+  </button>
+}
+<p class="gm-hint">
+  Alle Postfächer des lokalen Greenmail in einer Liste, alle 5 Sekunden neu gelesen. Enter öffnet eine Mail,
+  zweimal E löscht alle.
+</p>

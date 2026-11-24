@@ -1,0 +1,53 @@
+@if (empty()) {
+  <p class="gm-empty">Alle Schlüssel hängen am Brett: kein Passwort offen, kein Forward läuft.</p>
+}
+
+@if (passwords().length > 0) {
+  <h2 class="gm-plaque">
+    Passwörter
+    <span class="gm-plaque-note">{{ passwords().length }}</span>
+  </h2>
+  <ul class="gm-rows">
+    @for (row of passwords(); track row.connection.id) {
+      <li class="gm-row">
+        <button
+          type="button"
+          class="gm-row-main"
+          [attr.aria-label]="row.action"
+          (click)="lock(row.connection)"
+        >
+          <span class="gm-led" [attr.data-tone]="row.tone" aria-hidden="true"></span>
+          <span class="gm-text">
+            <span class="gm-label">{{ row.connection.label }}</span>
+            <span class="gm-note">{{ row.note }}</span>
+          </span>
+        </button>
+      </li>
+    }
+  </ul>
+}
+
+@if (forwards().length > 0) {
+  <h2 class="gm-plaque">
+    Forwards
+    <span class="gm-plaque-note">{{ forwards().length }}</span>
+  </h2>
+  <ul class="gm-rows">
+    @for (row of forwards(); track row.key) {
+      <li class="gm-row">
+        <button type="button" class="gm-row-main" [attr.aria-label]="row.action" (click)="stop(row.forward)">
+          <span class="gm-led" [attr.data-tone]="row.tone" aria-hidden="true"></span>
+          <span class="gm-text">
+            <span class="gm-label">{{ row.label }}</span>
+            <span class="gm-note">{{ row.note }}</span>
+          </span>
+        </button>
+      </li>
+    }
+  </ul>
+}
+
+@if (!empty()) {
+  <button type="button" class="gm-btn ks-gap" aria-keyshortcuts="q" (click)="closeAll()">Alles zu</button>
+}
+<p class="gm-hint">Enter sperrt ein Passwort oder stoppt einen Forward. PROD ist gelb.</p>

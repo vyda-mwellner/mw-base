@@ -1,0 +1,15 @@
+.ds-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vl-space-3);
+  margin-block-start: var(--vl-space-4);
+}
+
+// Reached by its row key only, like the remove cross, but without a mark of its own in the row.
+.ds-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}

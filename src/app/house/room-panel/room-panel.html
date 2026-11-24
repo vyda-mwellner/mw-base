@@ -1,0 +1,19 @@
+<ul class="gm-rows" aria-label="Was hier steht">
+  @for (entry of view().entries; track entry.id) {
+    <li class="gm-row" [attr.aria-current]="entry.current">
+      <span class="gm-text">
+        <span class="gm-label rp-label">{{ entry.label }}</span>
+        @if (entry.text) {
+          <span class="gm-note">{{ entry.text }}</span>
+        }
+      </span>
+      @if (entry.tone; as tone) {
+        <span class="gm-led" [attr.data-tone]="tone"><span class="vl-sr-only">Meldung</span></span>
+      }
+    </li>
+  }
+</ul>
+
+@if (view().empty) {
+  <p class="gm-hint">In diesem Zimmer steht noch nichts, was sich öffnen lässt.</p>
+}

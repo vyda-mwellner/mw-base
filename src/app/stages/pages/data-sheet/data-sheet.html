@@ -1,0 +1,94 @@
+<div class="gm-form">
+  <label class="gm-row gm-field">
+    <span class="gm-text">
+      <span class="gm-label">Verbindung</span>
+      <span class="gm-note">{{ connectionNote() }}</span>
+    </span>
+    <select class="gm-dial" aria-keyshortcuts="q" (change)="selectConnection($any($event.target).value)">
+      @for (each of connections(); track each.id) {
+        <option [value]="each.id" [selected]="each.id === connection()?.id">{{ each.label }}</option>
+      }
+    </select>
+  </label>
+</div>
+
+@if (locked()) {
+  <form class="gm-form ds-gap" data-enter="entsperren" (submit)="unlock(); $event.preventDefault()">
+    <label class="gm-row gm-field">
+      <span class="gm-text">
+        <span class="gm-label">Passwort</span>
+        <span class="gm-note">bleibt 10 Stunden im Speicher, nie auf der Platte</span>
+      </span>
+      <input
+        #passwordField
+        class="gm-slot"
+        type="password"
+        autocomplete="off"
+        aria-keyshortcuts="e"
+        [value]="password()"
+        (input)="password.set($any($event.target).value)"
+      />
+    </label>
+    <button type="submit" class="gm-btn gm-btn-primary" [disabled]="busy()">Entsperren</button>
+  </form>
+} @else if (canLock()) {
+  <button type="button" class="gm-btn ds-gap" aria-keyshortcuts="l" (click)="lock()">Sperren</button>
+}
+
+@if (configError(); as error) {
+  <div class="gm-banner ds-gap" data-tone="danger">
+    <p class="gm-banner-title">Abfragen nicht lesbar</p>
+    <p>{{ error }}</p>
+  </div>
+} @else if (areas().length === 0) {
+  <p class="gm-empty ds-gap">{{ loading() ? 'Wird gelesen ...' : 'Keine Abfragen für diese Verbindung.' }}</p>
+}
+
+@for (area of areas(); track area.name) {
+  <h2 class="gm-plaque">{{ area.name }}</h2>
+  <ul class="gm-rows">
+    @for (row of area.queries; track row.query.id) {
+      <li class="gm-row">
+        <button type="button" class="gm-row-main" (click)="pick(row.query)">
+          <span class="gm-text">
+            <span class="gm-label">{{ row.query.title }}</span>
+            <span class="gm-note">{{ row.note }}</span>
+          </span>
+          @if (row.input) {
+            <span class="gm-tag">Eingabe</span>
+          }
+        </button>
+      </li>
+      @if (row.open) {
+        <li #inputs class="ds-inputs">
+          <form class="gm-form" data-enter="ausführen" (submit)="run(); $event.preventDefault()">
+            @for (field of fields(); track field.param.name) {
+              <label class="gm-row gm-field">
+                <span class="gm-label">{{ field.param.name }}</span>
+                <input
+                  class="gm-slot"
+                  type="text"
+                  autocomplete="off"
+                  [value]="field.value"
+                  (input)="change(field.param.name, $any($event.target).value)"
+                />
+              </label>
+            }
+            <button type="submit" class="gm-btn gm-btn-primary" [disabled]="running()">Ausführen</button>
+          </form>
+        </li>
+      }
+    }
+  </ul>
+}
+
+@if (last()) {
+  <button type="button" class="gm-btn ds-gap" aria-keyshortcuts="f" (click)="showLast()">
+    Letztes Ergebnis von {{ last() }}
+  </button>
+}
+<p class="gm-hint">
+  Enter auf einer Abfrage führt sie gleich aus, eine Auswahl wie die Wochen mit ihrem ersten Wert. Auf dem
+  Schreibtisch drehen A und D die Auswahl, die Abfrage läuft dann neu. Eine mit Eingabe öffnet erst ihr Feld.
+  Jeder Abschnitt läuft lesend in einer eigenen Transaktion.
+</p>

@@ -1,0 +1,56 @@
+<svg:g class="vl-room" [class.vl-room-lit]="lit()" [style.--vl-dim]="dim()">
+  <rect
+    [attr.x]="shell().back.x"
+    [attr.y]="shell().back.y"
+    [attr.width]="shell().back.width"
+    [attr.height]="shell().back.height"
+    [attr.fill]="art().wall"
+  />
+  <polygon [attr.points]="shell().left" [attr.fill]="sideWall()" />
+  <path class="vl-marks-dark" [attr.d]="wallMarks().dark" />
+  <path class="vl-marks-light" [attr.d]="wallMarks().light" />
+  <polygon [attr.points]="shell().floor" [attr.fill]="floor()" />
+  <path class="vl-marks-dark" [attr.d]="floorMarks().dark" />
+  <path class="vl-marks-light" [attr.d]="floorMarks().light" />
+  @if (finished()) {
+    @for (board of shell().skirting; track board) {
+      <polygon class="vl-skirting" [attr.points]="board" />
+    }
+    <path class="vl-skirting-top" [attr.d]="shell().skirtingTop" />
+  }
+  @if (door(); as door) {
+    <g app-outer-door [out]="-1" [open]="door.open" [glass]="door.glass" [wood]="door.wood" />
+  }
+  <g app-solids [parts]="art().parts" />
+  @for (sign of signs(); track $index) {
+    <text
+      class="vl-sign"
+      [attr.x]="sign.x"
+      [attr.y]="sign.y"
+      [attr.font-size]="sign.size"
+      [attr.fill]="sign.color"
+      [style.text-anchor]="sign.anchor"
+    >
+      {{ sign.text }}
+    </text>
+  }
+  <polygon fill="url(#vl-depth)" [attr.points]="shell().hull" />
+  <polygon class="vl-cone" [attr.points]="cone()" />
+  <polygon class="vl-warm" fill="url(#vl-warm)" [attr.points]="shell().hull" />
+  <polygon class="vl-dark" [attr.points]="shell().hull" />
+  @if (art().glow; as glow) {
+    <g app-solids class="vl-glow" [parts]="glow" />
+  }
+  @for (sign of glowing(); track $index) {
+    <text
+      class="vl-sign vl-sign-glow"
+      [attr.x]="sign.x"
+      [attr.y]="sign.y"
+      [attr.font-size]="sign.size"
+      [attr.fill]="sign.color"
+      [style.text-anchor]="sign.anchor"
+    >
+      {{ sign.text }}
+    </text>
+  }
+</svg:g>

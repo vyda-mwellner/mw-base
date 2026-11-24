@@ -1,0 +1,232 @@
+@use './styles/game-menu';
+@use './styles/workbench';
+
+// The look of a pixel game: a pixel font for everything that is a label, square corners, shadows without blur.
+:root {
+  color-scheme: dark;
+  --vl-font-body:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
+    sans-serif;
+  --vl-font-pixel: 'Jersey 15', var(--vl-font-body);
+  // Shadow and light of the scene: nothing in it is shaded with black or white.
+  --vl-ink: #15102e;
+  --vl-light: #fff3d1;
+  // The brand on anthracite, as in the cockpit. The green is a fill only; text, markers and the cursor take the
+  // lighter one. Hex values, because mermaid reads some of them and cannot resolve var() or color-mix().
+  --vl-edge: #070808;
+  --vl-page: #1b1d1c;
+  --vl-card: #131514;
+  --vl-text: #e4e7e6;
+  --vl-bright: #f5f7f6;
+  --vl-primary: #006436;
+  --vl-secondary: #3198bb;
+  --vl-ok: #52c98d;
+  --vl-warning: #e0a23c;
+  --vl-danger: #e86a62;
+  --vl-info: var(--vl-secondary);
+  --vl-space-1: 0.2rem;
+  --vl-space-2: 0.35rem;
+  --vl-space-3: 0.5rem;
+  --vl-space-4: 0.75rem;
+  --vl-space-5: 1rem;
+  --vl-space-6: 1.35rem;
+  --vl-space-7: 1.75rem;
+  --vl-space-8: 2rem;
+  --vl-duration-slow: 520ms;
+  --vl-duration-zoom: 650ms;
+  --vl-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --vl-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  block-size: 100%;
+}
+
+// Everything in rem grows with the window; no zoom, as WebKit then scrolls out of step with the page.
+html {
+  font-size: 110%;
+}
+
+// In a browser the device sits in the middle of the page.
+body {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  overflow: hidden;
+  background: #0c0d0d;
+  color: var(--vl-text);
+  font-family: var(--vl-font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+// An app, not a page: labels, signs and menus are neither selected nor point a text cursor. Fields and what
+// reads like a document (previews, notes, reports, logs) stay text.
+body {
+  cursor: default;
+  user-select: none;
+}
+
+input,
+textarea,
+pre,
+.wb-prose,
+.wb-content {
+  cursor: auto;
+  user-select: text;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--vl-font-pixel);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+// A key is a block like those in the house: light on its upper edge, standing on a line of shadow.
+kbd {
+  position: relative;
+  inset-block-start: -1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 1.6em;
+  padding: 0.15em 0.45em;
+  border: 1px solid var(--gm-frame);
+  border-block-end-width: 3px;
+  background: var(--gm-raised);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 18%),
+    0 2px 0 var(--vl-edge);
+  color: var(--vl-text);
+  font-family: var(--vl-font-pixel);
+  font-size: 0.85em;
+  line-height: 1.4;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.vl-sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// A box that scrolls by itself, reached with W and S: the arrow keys now move what is in it.
+[data-scroll]:focus {
+  outline: 2px solid var(--gm-accent);
+  outline-offset: 2px;
+}
+
+// A field that has the keys to itself, see `KeyWalk`.
+input[data-armed]:focus,
+textarea[data-armed]:focus {
+  outline: 2px solid var(--vl-warning);
+  outline-offset: 2px;
+}
+
+// Shut until Enter opens it: no caret that would promise typing.
+input:focus:not([data-armed]),
+textarea:focus:not([data-armed]) {
+  caret-color: transparent;
+}
+
+// What the scene draws besides its boxes. Global, because the figure and the scene are components of their own.
+.a-star {
+  fill: #e2e8f0;
+}
+
+.a-moon {
+  fill: #fef3c7;
+}
+
+.a-moon-dark {
+  fill: #e7d9a4;
+}
+
+.a-sun,
+.a-sun-ray {
+  fill: #ffd35a;
+}
+
+.a-sun-core {
+  fill: #fff1a8;
+}
+
+.a-earth {
+  fill: #1c1512;
+}
+
+.a-humus {
+  fill: #2d2016;
+}
+
+.a-stone {
+  fill: #3b3029;
+}
+
+.a-stone-top {
+  fill: #58483c;
+}
+
+.a-grit {
+  fill: #0f0b09;
+}
+
+.a-facade-line {
+  fill: none;
+  stroke: var(--vl-ink);
+  stroke-width: 0.6;
+  opacity: 0.22;
+}
+
+.a-facade-frame {
+  stroke: var(--vl-ink);
+  stroke-width: 0.6;
+}
+
+.a-facade-bar {
+  fill: none;
+  stroke-width: 1.4;
+}
+
+.a-shell {
+  fill: #0d1422;
+}
+
+.a-slab-line {
+  fill: none;
+  stroke: #2a364c;
+}
+
+.a-footing {
+  fill: #1f2937;
+}
+
+.a-facade,
+.a-facade-window {
+  stroke: #0d1422;
+}
+
+.a-shade {
+  fill: #000;
+  opacity: 0.3;
+}

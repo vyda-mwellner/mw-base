@@ -1,0 +1,54 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "Base",
+  "version": "0.1.0",
+  "identifier": "de.vyda.base",
+  "build": {
+    "frontendDist": "../dist/base/browser",
+    "devUrl": "http://localhost:4242",
+    "beforeDevCommand": "npm start",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Base",
+        "width": 770,
+        "height": 1021,
+        "resizable": false,
+        "maximizable": false,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "trafficLightPosition": { "x": 15, "y": 24 },
+        "visible": false
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'self'",
+        "script-src": "'self'",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data:",
+        "font-src": "'self' data:",
+        "connect-src": "ipc: http://ipc.localhost https://api.open-meteo.com https://endoflife.date https://api.deps.dev",
+        "object-src": "'none'",
+        "base-uri": "'self'",
+        "form-action": "'none'"
+      },
+      "dangerousDisableAssetCspModification": ["style-src"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["app"],
+    "category": "Productivity",
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+    "macOS": {
+      "minimumSystemVersion": "13.0",
+      "signingIdentity": "-"
+    },
+    "shortDescription": "Das Arbeits-Cockpit als Bürogebäude zum Durchlaufen",
+    "longDescription": "Ein Bürogebäude, vorne aufgeschnitten: Räume mit Dingen, die Werkzeuge öffnen. Die Daten liegen als JSON unter ~/.config/base."
+  }
+}

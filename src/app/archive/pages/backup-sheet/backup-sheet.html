@@ -1,0 +1,52 @@
+@if (error(); as error) {
+  <div class="gm-banner" data-tone="danger">
+    <p class="gm-banner-title">Kein Backup-Plan</p>
+    <p>{{ error }}</p>
+  </div>
+}
+
+@if (plan(); as plan) {
+  <ul class="gm-rows">
+    <li class="gm-row">
+      <span class="gm-text">
+        <span class="gm-label">Ziel</span>
+        <span class="gm-note">{{ plan.targetDir }}</span>
+      </span>
+    </li>
+  </ul>
+
+  <h2 class="gm-plaque">
+    Einträge
+    <span class="gm-plaque-note">{{ last() }}</span>
+  </h2>
+  @if (rows().length > 0) {
+    <ul class="gm-rows">
+      @for (row of rows(); track row.source) {
+        <li class="gm-row">
+          <span class="gm-led" [attr.data-tone]="row.tone" aria-hidden="true"></span>
+          <span class="gm-text">
+            <span class="gm-label">{{ row.source }}</span>
+            <span class="gm-note" [attr.data-tone]="row.noteTone">{{ row.note }}</span>
+          </span>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="gm-empty">Der Plan hat noch keine Einträge.</p>
+  }
+
+  <button
+    type="button"
+    class="gm-btn gm-btn-primary bs-gap"
+    aria-keyshortcuts="q"
+    [disabled]="busy()"
+    (click)="run()"
+  >
+    Jetzt sichern
+  </button>
+}
+
+<p class="gm-hint">
+  Kopiert nur, was sich seit dem letzten Lauf geändert hat, und löscht im Ziel nichts. Der Plan steht von Hand
+  in einstellungen/backup.json: targetDir und je Eintrag source, target und exclude.
+</p>

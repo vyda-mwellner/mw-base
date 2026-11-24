@@ -1,0 +1,31 @@
+<h2 class="gm-plaque">Heute</h2>
+<dl class="gm-stats mv-stats">
+  @for (tile of tiles(); track tile.label) {
+    <div class="gm-stat">
+      <dt class="gm-stat-label">{{ tile.label }}</dt>
+      <dd class="gm-stat-value">{{ tile.value }}</dd>
+    </div>
+  }
+</dl>
+
+<h2 class="gm-plaque">Pro Tag</h2>
+@if (days().length > 0) {
+  <ul class="gm-rows">
+    @for (day of days(); track day.day) {
+      <li class="gm-row">
+        <span class="gm-text">
+          <span class="gm-label">{{ day.label }}</span>
+          <span class="gm-note">{{ day.note }}</span>
+        </span>
+        <span class="gm-value">{{ day.value }}</span>
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="gm-empty">Ab morgen steht hier jeder Tag einzeln.</p>
+}
+
+<p class="gm-hint">
+  Gezählt wird, was die Figur läuft und mit dem Aufzug fährt. Ein Schritt ist einer ihrer Schritte, die Meter
+  rechnen sie als 1,75 m groß.
+</p>

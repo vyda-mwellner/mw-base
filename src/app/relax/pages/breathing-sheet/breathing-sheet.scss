@@ -1,0 +1,47 @@
+.br-stage {
+  display: grid;
+  place-items: center;
+  block-size: 15rem;
+}
+
+// Small at rest, out and while holding, full while breathing in: each change takes as long as the phase it shows.
+.br-circle {
+  grid-area: 1 / 1;
+  inline-size: 13rem;
+  aspect-ratio: 1;
+  border: 2px solid var(--vl-secondary);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--vl-secondary) 22%, transparent);
+  scale: 0.55;
+  transition: scale 7s ease-in-out;
+
+  &[data-phase='in'] {
+    scale: 1;
+    transition-duration: 4s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.br-say {
+  display: grid;
+  grid-area: 1 / 1;
+  justify-items: center;
+  margin: 0;
+  color: var(--vl-bright);
+  font-family: var(--vl-font-pixel);
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+
+.br-left {
+  font-size: 2.4rem;
+}
+
+.br-round {
+  margin: 0 0 var(--vl-space-2);
+  color: var(--gm-muted);
+  text-align: center;
+}

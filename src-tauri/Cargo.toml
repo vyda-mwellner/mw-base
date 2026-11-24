@@ -1,0 +1,40 @@
+[package]
+name = "base"
+description = "Base: the workday tools as an office building cut open at the front"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90"
+
+[lib]
+name = "base_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2.12.5", features = [] }
+tauri-plugin-opener = "2"
+thiserror = "2"
+tokio = { version = "1", features = ["process", "io-util", "time", "sync", "macros", "rt", "net"] }
+tokio-postgres = { version = "0.7", features = ["with-serde_json-1"] }
+postgres-native-tls = "0.5"
+native-tls = "0.2"
+regex = "1"
+reqwest = { version = "0.13", default-features = false, features = ["json", "native-tls"] }
+mail-parser = "0.11"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[workspace]

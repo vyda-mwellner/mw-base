@@ -1,0 +1,392 @@
+// What arrives in the workbench as innerHTML: reports (`.wb-content`) and rendered markdown (`.wb-prose`).
+// Global, because no component style reaches HTML that is not in a template.
+.wb-content {
+  margin-block-start: var(--vl-space-5);
+
+  > h1 {
+    margin-block: 0 var(--vl-space-2);
+    color: var(--vl-bright);
+    font-size: 2.2rem;
+    letter-spacing: 0.04em;
+    text-shadow: 2px 2px 0 var(--vl-edge);
+    text-transform: uppercase;
+  }
+}
+
+.wb-section > h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-3);
+  margin: 2rem 0 var(--vl-space-3);
+  padding: 0.25rem 0.6rem;
+  background: var(--gm-frame);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 28%),
+    var(--gm-foot),
+    3px 3px 0 var(--vl-edge);
+  color: var(--vl-bright);
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    flex: none;
+    inline-size: 0.45rem;
+    block-size: 0.45rem;
+    background: var(--gm-accent);
+    box-shadow: 1px 1px 0 var(--vl-edge);
+  }
+}
+
+.wb-muted {
+  color: var(--gm-muted);
+}
+
+.wb-table-wrap {
+  overflow-x: auto;
+  border: 2px solid var(--gm-frame);
+  background: var(--gm-panel);
+  box-shadow:
+    var(--gm-lit),
+    var(--gm-foot),
+    4px 4px 0 var(--vl-edge);
+}
+
+.wb-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th,
+  td {
+    padding: var(--vl-space-2) var(--vl-space-4);
+    border-block-end: 2px solid var(--gm-line);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  thead th {
+    border-block-end-color: var(--gm-frame);
+    color: var(--vl-bright);
+    font-family: var(--vl-font-pixel);
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  tbody th {
+    color: var(--gm-text);
+    font-weight: 400;
+  }
+
+  tbody tr:nth-child(even) {
+    background: rgb(255 255 255 / 3%);
+  }
+
+  [data-tone='info'] {
+    color: var(--vl-info);
+  }
+
+  [data-tone='warning'] {
+    color: var(--vl-warning);
+  }
+
+  [data-tone='danger'] {
+    color: var(--vl-danger);
+  }
+}
+
+.wb-num {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+// Rendered markdown reads like a document, not like a menu.
+.wb-prose {
+  color: var(--vl-text);
+  font-size: 0.8rem;
+  line-height: 1.65;
+
+  > :first-child {
+    margin-block-start: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 1.6em 0 0.5em;
+    color: var(--vl-bright);
+    font-family: var(--vl-font-body);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    font-size: 1.9em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+
+  a {
+    color: var(--vl-secondary);
+  }
+
+  code {
+    padding: 0.1em 0.3em;
+    background: rgb(255 255 255 / 8%);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.88em;
+  }
+
+  pre {
+    padding: var(--vl-space-4);
+    overflow-x: auto;
+    border: 2px solid var(--gm-frame);
+    background: var(--gm-panel);
+
+    code {
+      padding: 0;
+      background: none;
+    }
+  }
+
+  blockquote {
+    margin-inline: 0;
+    padding-inline-start: var(--vl-space-4);
+    border-inline-start: 4px solid var(--gm-frame);
+    color: var(--gm-muted);
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: var(--vl-space-2) var(--vl-space-4);
+    border: 1px solid var(--gm-frame);
+  }
+
+  img {
+    max-inline-size: 100%;
+  }
+
+  .diagram {
+    margin-block-end: 1em;
+    overflow-x: auto;
+
+    // Auto margins center a diagram that fits and drop to 0 for a wider one, so its left edge stays reachable.
+    svg {
+      display: block;
+      margin-inline: auto;
+    }
+  }
+
+  hr {
+    border: 0;
+    border-block-start: 2px solid var(--gm-frame);
+  }
+}
+
+// A drawing on the workbench, as wide as the desk. No max-content cap: under the page zoom WebKit takes that as
+// the 300px of a replaced element without a size.
+.wb-picture svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  border-radius: 8px;
+}
+
+// The trace of an exception under its message in a log report.
+.wb-trace {
+  margin: var(--vl-space-2) 0 0;
+  max-block-size: 12rem;
+  overflow: auto;
+  color: var(--gm-muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+
+// The PNG export's categorical order in dark steps, so a series keeps its hue; status colors would read as faults.
+.wb-chart {
+  margin: var(--vl-space-4) 0;
+  overflow-x: auto;
+
+  svg {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
+  --wb-s0: #3987e5;
+  --wb-s1: #d95926;
+  --wb-s2: #199e70;
+  --wb-s3: #c98500;
+  --wb-sx: #6b706d;
+}
+
+@each $series in s0, s1, s2, s3, sx {
+  .wb-chart .wb-#{$series} {
+    fill: var(--wb-#{$series});
+  }
+
+  .wb-swatch.wb-#{$series} {
+    background: var(--wb-#{$series});
+  }
+
+  .wb-chart .wb-line.wb-#{$series} {
+    stroke: var(--wb-#{$series});
+  }
+}
+
+.wb-chart .wb-line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.wb-chart .wb-dot {
+  stroke: var(--vl-page);
+  stroke-width: 2;
+}
+
+.wb-chart .wb-grid {
+  stroke: #2f3331;
+  stroke-width: 1;
+}
+
+.wb-chart .wb-base {
+  stroke: #4b504d;
+  stroke-width: 1;
+}
+
+.wb-chart .wb-axis {
+  fill: var(--gm-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.wb-chart .wb-label {
+  fill: var(--gm-text);
+  font-size: 12px;
+}
+
+.wb-chart .wb-value {
+  fill: var(--gm-text);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.wb-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vl-space-2) var(--vl-space-5);
+  margin: 0 0 var(--vl-space-3);
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--vl-space-2);
+  }
+}
+
+.wb-swatch {
+  inline-size: 0.7rem;
+  block-size: 0.7rem;
+}
+
+.wb-details {
+  margin-block-start: var(--vl-space-3);
+
+  > summary {
+    color: var(--gm-muted);
+    cursor: pointer;
+  }
+}
+
+.wb-copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--vl-space-3);
+
+  .wb-log {
+    justify-self: stretch;
+    white-space: pre-wrap;
+  }
+}
+
+.wb-stat {
+  display: grid;
+  margin: var(--vl-space-4) 0;
+}
+
+.wb-stat-value {
+  color: var(--vl-bright);
+  font-size: 2.6rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.wb-record {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--vl-space-1) var(--vl-space-4);
+
+  dt {
+    color: var(--gm-muted);
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+// The frontmatter above a note.
+.wb-facts {
+  margin-block: var(--vl-space-5);
+  font-size: 0.85rem;
+}
+
+// A cell that opens another query: it reads as a link, it is a button.
+.wb-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--vl-secondary);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+// The output of a process, line by line as it wrote it.
+.wb-log {
+  margin: var(--vl-space-3) 0 0;
+  padding: var(--vl-space-3) var(--vl-space-4);
+  overflow-x: auto;
+  border: 2px solid var(--gm-frame);
+  background: var(--gm-panel);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  white-space: pre;
+}
+
+.wb-content [data-tone='danger'] {
+  color: var(--vl-danger);
+}

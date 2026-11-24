@@ -1,0 +1,95 @@
+// Textures are the same two inks on every material: the colour under them shows through.
+.vl-marks-dark,
+.vl-marks-light {
+  fill: none;
+  stroke-width: 0.6;
+}
+
+.vl-marks-dark {
+  stroke: var(--vl-ink);
+  opacity: 0.26;
+}
+
+.vl-marks-light {
+  stroke: var(--vl-light);
+  opacity: 0.2;
+}
+
+.vl-skirting {
+  fill: #ebe4d1;
+  stroke: #6b6577;
+  stroke-width: 0.5;
+}
+
+.vl-skirting-top {
+  fill: none;
+  stroke: #fffaf0;
+  stroke-width: 0.7;
+}
+
+.vl-cone,
+.vl-warm,
+.vl-dark {
+  transition: opacity var(--vl-duration-slow) var(--vl-ease-out);
+}
+
+.vl-cone {
+  fill: #ffe08a;
+  opacity: 0;
+
+  .vl-room-lit & {
+    opacity: 0.07;
+  }
+}
+
+.vl-warm {
+  opacity: 0;
+
+  .vl-room-lit & {
+    opacity: 1;
+  }
+}
+
+// A room nobody is in has its light off; the marks sit above it and still show.
+.vl-dark {
+  fill: #050a16;
+  opacity: var(--vl-dim);
+
+  .vl-room-lit & {
+    opacity: 0;
+  }
+}
+
+// Light strips: over the dark of the room they stay faintly visible, and their colour wanders.
+.vl-glow {
+  opacity: 0.4;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vl-led 12s steps(6) infinite;
+    // The colour wanders in the SVG filter `#vl-led` of the scene: WebKit ignores hue-rotate() on SVG elements.
+    filter: url('#vl-led');
+  }
+}
+
+@keyframes vl-led {
+  0% {
+    opacity: 0.28;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+
+  100% {
+    opacity: 0.28;
+  }
+}
+
+.vl-sign {
+  font-family: var(--vl-font-pixel);
+  text-anchor: middle;
+}
+
+.vl-sign-glow {
+  opacity: 0.45;
+}

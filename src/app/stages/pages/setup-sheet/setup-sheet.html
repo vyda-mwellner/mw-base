@@ -1,0 +1,39 @@
+@if (error(); as error) {
+  <div class="gm-banner" data-tone="danger">
+    <p class="gm-banner-title">Nicht lesbar</p>
+    <p>{{ error }}</p>
+  </div>
+}
+
+<h2 class="gm-plaque">Anschlüsse</h2>
+<ul class="gm-rows">
+  @for (row of rows(); track row.label) {
+    <li class="gm-row">
+      <span class="gm-led" [attr.data-tone]="row.tone" aria-hidden="true"></span>
+      <span class="gm-text">
+        <span class="gm-label">{{ row.label }}</span>
+        <span class="gm-note">{{ row.note }}</span>
+      </span>
+      <span class="gm-value" [attr.data-tone]="row.tone">{{ row.value }}</span>
+    </li>
+  }
+</ul>
+
+<h2 class="gm-plaque">Konfiguration</h2>
+@if (complete()) {
+  <div class="gm-banner" data-tone="ok">
+    <p class="gm-banner-title">Alles da</p>
+    <p>Verbindungen, Forwards, Abfragen, Jira, Team und Apps sind lesbar.</p>
+  </div>
+}
+@for (problem of problems(); track problem) {
+  <div class="gm-banner ss-gap" data-tone="danger">
+    <p>{{ problem }}</p>
+  </div>
+}
+
+<button type="button" class="gm-btn ss-gap" aria-keyshortcuts="q" (click)="reload()">Neu prüfen</button>
+<p class="gm-hint">
+  Die Konfiguration liegt im Datenordner unter stages/, git/, landschaft/ und einstellungen/pfade.json. Sie
+  wird nur von Hand geändert, das Fenster schreibt dort nichts.
+</p>

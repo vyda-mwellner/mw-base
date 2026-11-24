@@ -1,0 +1,14 @@
+<div class="fl-popup" role="dialog" [attr.aria-label]="title()">
+  <p class="fl-title">{{ title() }}</p>
+  <input
+    #field
+    class="fl-field"
+    type="text"
+    autocomplete="off"
+    spellcheck="false"
+    [attr.aria-label]="label()"
+    [value]="value()"
+    (keydown)="key($event)"
+  />
+  <p class="fl-hint">{{ hint() }}</p>
+</div>

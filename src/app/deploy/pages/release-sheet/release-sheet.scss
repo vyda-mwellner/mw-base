@@ -1,0 +1,20 @@
+.rl-gap {
+  margin-block-start: var(--vl-space-4);
+}
+
+// Every ticket key as wide as the widest one, so the summaries start on one line.
+.rl-tickets {
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--vl-space-3);
+
+  > .gm-row,
+  .gm-row-main {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  .gm-tag {
+    text-align: center;
+  }
+}

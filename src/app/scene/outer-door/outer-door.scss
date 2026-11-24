@@ -1,0 +1,61 @@
+// Registered, so the angle itself can be moved in a transition, not only the transform made from it.
+@property --vl-swing {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.vl-doorway {
+  fill: #0a101c;
+}
+
+rect,
+path {
+  stroke-width: 0.6;
+}
+
+path {
+  fill: none;
+  stroke-width: 0.8;
+}
+
+.vl-knob {
+  fill: #f8cd3f;
+  stroke: var(--vl-ink);
+}
+
+// The leaf is drawn flat, its hinge on the left. Turning it by `--vl-swing` moves its free edge on a circle
+// seen at the slant of the scene: at 0 it points to the viewer along the wall, at 90 degrees out of the house.
+.vl-swing {
+  transform: matrix(
+    calc(var(--vl-out) * sin(var(--vl-swing)) - var(--vl-run) * cos(var(--vl-swing))),
+    calc(var(--vl-rise) * cos(var(--vl-swing))),
+    0,
+    1,
+    0,
+    0
+  );
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: --vl-swing 0.4s ease-in-out;
+  }
+}
+
+// Shut, the leaf lies in the wall that is turned away from the light.
+.vl-swing-shade {
+  fill: var(--vl-ink);
+  stroke: none;
+  opacity: 0.3;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: opacity 0.4s ease-in-out;
+  }
+}
+
+.vl-swing-open {
+  --vl-swing: 90deg;
+
+  .vl-swing-shade {
+    opacity: 0;
+  }
+}

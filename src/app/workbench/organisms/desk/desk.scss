@@ -1,0 +1,18 @@
+// Over scene and panel, between the island on top and the bar of keys at the foot of the house.
+:host {
+  position: absolute;
+  inset: 3.125rem 0 calc(2.375rem + 3px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background: var(--vl-page);
+}
+
+.wb-body {
+  flex: 1;
+  min-block-size: 0;
+  padding: var(--vl-space-6) var(--vl-space-7) var(--vl-space-8);
+  overflow-y: auto;
+  outline: none;
+  scrollbar-width: thin;
+}

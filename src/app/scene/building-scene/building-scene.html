@@ -1,0 +1,410 @@
+<svg class="vl-scene" [style.height.px]="camera().height" aria-hidden="true">
+  <defs>
+    <linearGradient id="vl-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.35" [attr.stop-color]="heaven().top" />
+      <stop offset="1" [attr.stop-color]="heaven().bottom" />
+    </linearGradient>
+    <radialGradient id="vl-halo">
+      <stop offset="0" stop-color="#fef3c7" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#fef3c7" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="vl-warm" cx="0.5" cy="0.1" r="0.9">
+      <stop offset="0" stop-color="#ffe08a" stop-opacity="0.3" />
+      <stop offset="0.8" stop-color="#ffe08a" stop-opacity="0" />
+    </radialGradient>
+    <filter id="vl-led" color-interpolation-filters="sRGB">
+      <feColorMatrix type="hueRotate" values="0">
+        <animate
+          attributeName="values"
+          values="0;10;20;30;40;50;60;70;60;50;40;30;20;10"
+          calcMode="discrete"
+          dur="12s"
+          repeatCount="indefinite"
+        />
+      </feColorMatrix>
+    </filter>
+    <radialGradient id="vl-lantern">
+      <stop offset="0" stop-color="#ffe08a" stop-opacity="0.35" />
+      <stop offset="1" stop-color="#ffe08a" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="vl-depth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000" stop-opacity="0.34" />
+      <stop offset="0.3" stop-color="#000" stop-opacity="0" />
+      <stop offset="0.8" stop-color="#000" stop-opacity="0" />
+      <stop offset="1" stop-color="#000" stop-opacity="0.2" />
+    </linearGradient>
+    <pattern id="vl-soil" width="64" height="48" patternUnits="userSpaceOnUse">
+      <rect class="a-earth" width="64" height="48" />
+      <path class="a-stone" d="M6 8h8v4h-8zM30 20h10v5h-10zM50 6h6v4h-6zM18 34h7v4h-7zM44 38h9v4h-9z" />
+      <path class="a-stone-top" d="M6 8h8v1h-8zM30 20h10v1h-10zM50 6h6v1h-6zM18 34h7v1h-7zM44 38h9v1h-9z" />
+      <path
+        class="a-grit"
+        d="M2 26h2v2h-2zM24 12h2v2h-2zM58 30h2v2h-2zM36 44h2v2h-2zM12 44h2v1h-2zM40 2h3v1h-3z"
+      />
+    </pattern>
+    <clipPath id="vl-door-clip">
+      <polygon [attr.points]="lift.opening" />
+    </clipPath>
+    <clipPath id="vl-lift-clip">
+      @for (opening of liftOpenings; track opening.floor) {
+        <polygon [attr.points]="lift.opening" [attr.transform]="opening.transform" />
+      }
+    </clipPath>
+  </defs>
+
+  <g class="vl-camera" [style.translate]="skyStyle().translate" [style.scale]="skyStyle().scale">
+    <rect fill="url(#vl-sky)" x="-800" y="-500" width="2000" [attr.height]="frame.street + 500" />
+    <g [style.opacity]="heaven().stars">
+      <g class="vl-stars">
+        @for (tile of starTiles; track tile) {
+          <path class="a-star" [attr.transform]="tile" [attr.d]="starTile" />
+        }
+      </g>
+    </g>
+    @for (rocket of rockets(); track rocket.at) {
+      <path
+        class="vl-rocket"
+        [attr.transform]="rocket.at"
+        [style.fill]="rocket.color"
+        d="M-1-1h2v2h-2zM-1-11h2v4h-2zM-1 7h2v4h-2zM-11-1h4v2h-4zM7-1h4v2h-4zM-8-8h3v3h-3zM5-8h3v3h-3zM-8 5h3v3h-3zM5 5h3v3h-3z"
+      />
+    }
+    @if (heaven().moon; as moon) {
+      <g [attr.transform]="moon" [style.opacity]="heaven().bodies">
+        <circle fill="url(#vl-halo)" r="34" />
+        <path class="a-moon" d="M-6-10h12v2h2v2h2v12h-2v2h-2v2h-12v-2h-2v-2h-2v-12h2v-2h2z" />
+        <rect class="a-moon-dark" x="2" y="-6" width="4" height="4" />
+        <rect class="a-moon-dark" x="-6" y="2" width="3" height="3" />
+      </g>
+    }
+    @if (heaven().sun; as sun) {
+      <g [attr.transform]="sun" [style.opacity]="heaven().bodies">
+        <circle fill="url(#vl-halo)" r="46" />
+        <path
+          class="a-sun-ray"
+          d="M-2-25h4v6h-4zM-2 19h4v6h-4zM-25-2h6v4h-6zM19-2h6v4h-6zM-20-20h4v4h-4zM16-20h4v4h-4zM-20 16h4v4h-4zM16 16h4v4h-4z"
+        />
+        <path class="a-sun" d="M-9-13h18v4h4v18h-4v4h-18v-4h-4v-18h4z" />
+        <path class="a-sun-core" d="M-7-9h14v2h2v12h-2v2h-14v-2h-2v-12h2z" />
+      </g>
+    }
+    <g class="vl-clouds">
+      <g app-solids transform="translate(0 44)" [parts]="heaven().cloud" />
+      <g app-solids transform="translate(310 120)" [parts]="heaven().cloud" />
+      <g app-solids transform="translate(150 -170)" [parts]="heaven().cloud" />
+      <g app-solids transform="translate(620 70)" [parts]="heaven().cloud" />
+      <g app-solids transform="translate(900 150)" [parts]="heaven().cloud" />
+      <g app-solids transform="translate(760 -90)" [parts]="heaven().cloud" />
+    </g>
+    @if (overcast()) {
+      <g class="vl-clouds vl-clouds-more">
+        <g app-solids transform="translate(80 -40)" [parts]="heaven().cloud" />
+        <g app-solids transform="translate(380 20)" [parts]="heaven().cloud" />
+        <g app-solids transform="translate(240 -110)" [parts]="heaven().cloud" />
+        <g app-solids transform="translate(-60 150)" [parts]="heaven().cloud" />
+        <g app-solids transform="translate(540 -30)" [parts]="heaven().cloud" />
+        <g app-solids transform="translate(840 40)" [parts]="heaven().cloud" />
+        <g app-solids transform="translate(1000 -120)" [parts]="heaven().cloud" />
+      </g>
+    }
+    @if (!fall() && heaven().birds > 0) {
+      <g [style.opacity]="heaven().birds">
+        @for (bird of birds; track bird.at) {
+          <g [attr.transform]="bird.at">
+            <g
+              class="vl-bird"
+              [style.animation-duration.s]="bird.every"
+              [style.animation-delay.s]="bird.delay"
+            >
+              <g [attr.transform]="bird.size">
+                <path class="vl-wing" d="M-5-2h2v1h2v1h2v-1h2v-1h2v1h-2v1h-2v1h-2v-1h-2v-1h-2z" />
+                <path
+                  class="vl-wing vl-wing-down"
+                  d="M-5 1h2v-1h2v-1h2v1h2v1h2v1h-2v-1h-2v-1h-2v1h-2v1h-2z"
+                />
+              </g>
+            </g>
+          </g>
+        }
+      </g>
+    }
+    @if (fall(); as fall) {
+      <path class="vl-fall" [class.vl-fall-snow]="fall.snow" [attr.d]="fall.path" />
+    }
+  </g>
+
+  <g class="vl-camera" [style.translate]="cameraStyle().translate" [style.scale]="cameraStyle().scale">
+    <rect
+      [attr.fill]="heaven().lawnTop"
+      x="-400"
+      [attr.y]="frame.lawnTop"
+      [attr.width]="frame.lawnWidth"
+      [attr.height]="frame.lawnHeight"
+    />
+    <rect fill="url(#vl-soil)" x="-400" [attr.y]="frame.street" [attr.width]="frame.lawnWidth" height="800" />
+    <rect class="a-humus" x="-400" [attr.y]="frame.street" [attr.width]="frame.lawnWidth" height="12" />
+    <rect
+      [attr.fill]="heaven().lawn"
+      x="-400"
+      [attr.y]="frame.street"
+      [attr.width]="frame.lawnWidth"
+      height="4"
+    />
+    <path [attr.fill]="heaven().lawn" [attr.d]="frame.fringe" />
+    <g app-solids [attr.transform]="frame.ground" [parts]="grounds().behind" />
+
+    @for (room of cells(); track room.id) {
+      @if (room.open) {
+        <g [attr.transform]="room.transform">
+          <polygon [attr.points]="room.deck" [attr.fill]="room.art.floor" />
+          @if (room.marks; as marks) {
+            <path class="vl-ground-dark" [attr.d]="marks.dark" />
+            <path class="vl-ground-light" [attr.d]="marks.light" />
+          }
+          <g app-solids [parts]="room.art.parts" />
+          @for (critter of room.art.critters; track $index) {
+            <g app-solids class="vl-critter" [style.opacity]="heaven().birds" [parts]="critter" />
+          }
+          @if (room.lantern; as lantern) {
+            @if (lantern.on && room.art.glow) {
+              <g app-solids [parts]="room.art.glow" />
+            }
+            <ellipse
+              class="vl-lantern"
+              [class.vl-lantern-on]="lantern.on"
+              [attr.cx]="lantern.at[0]"
+              [attr.cy]="lantern.at[1]"
+              rx="110"
+              ry="62"
+              fill="url(#vl-lantern)"
+            />
+          }
+        </g>
+      } @else {
+        <g
+          app-room-cell
+          [attr.transform]="room.transform"
+          [art]="room.art"
+          [width]="room.width"
+          [lit]="room.lit"
+          [dim]="room.dim"
+          [cone]="room.cone"
+          [door]="room.door"
+        />
+      }
+    }
+
+    <g clip-path="url(#vl-lift-clip)">
+      <g [attr.transform]="lift.transform">
+        <g app-solids [parts]="lift.inside" />
+        <g app-solids class="vl-weight" [style.translate]="weightAt()" [parts]="lift.weight" />
+        <g app-solids [style.translate]="cabAt()" [parts]="lift.cab" />
+      </g>
+      @if (inCab()) {
+        <ng-container [ngTemplateOutlet]="figure" />
+      }
+    </g>
+    <g [attr.transform]="lift.transform">
+      @for (door of liftDoors(); track door.floor) {
+        <g [attr.transform]="door.transform">
+          <g app-solids [parts]="lift.core" />
+          <!-- Cut to the opening: an open leaf slides into the pier beside it. -->
+          <g clip-path="url(#vl-door-clip)">
+            <polygon
+              class="vl-lift-leaf"
+              [style.translate]="door.open ? leafSlide.left : '0px'"
+              [attr.points]="lift.leaves.left"
+            />
+            <polygon
+              class="vl-lift-leaf"
+              [style.translate]="door.open ? leafSlide.right : '0px'"
+              [attr.points]="lift.leaves.right"
+            />
+          </g>
+          <g app-solids [parts]="door.frame" />
+          <text class="vl-floor-sign" [class.vl-floor-sign-lit]="door.here" [attr.transform]="lift.sign">
+            {{ door.name }}
+          </text>
+        </g>
+      }
+    </g>
+
+    <polygon class="a-facade" [attr.fill]="heaven().facade" [attr.points]="frame.facade" />
+    <path class="a-facade-line" [attr.d]="frame.siding" />
+    @for (window of facadeWindows(); track window.transform) {
+      <g [attr.transform]="window.transform">
+        <polygon class="a-facade-frame" [attr.fill]="heaven().parapet" [attr.points]="window.frame" />
+        <polygon class="a-facade-window" [attr.fill]="window.fill" [attr.points]="window.points" />
+        <path class="a-facade-bar" [attr.stroke]="heaven().parapet" [attr.d]="window.bars" />
+      </g>
+    }
+    <g app-solids [attr.transform]="frame.frontDoor" [parts]="entrance().frame" />
+    <g
+      app-outer-door
+      [attr.transform]="frame.frontDoor"
+      [out]="1"
+      [open]="frontDoorOpen()"
+      [glass]="entrance().door.glass"
+      [wood]="entrance().door.wood"
+    />
+    <rect fill="url(#vl-soil)" [attr.x]="frame.houseEnd" [attr.y]="frame.street" width="648" height="800" />
+    <rect class="a-humus" [attr.x]="frame.houseEnd" [attr.y]="frame.street" width="648" height="12" />
+    <polygon [attr.fill]="heaven().paving" [attr.points]="frame.yard" />
+    <path class="vl-ground-dark" [attr.d]="frame.paving" />
+    <polygon
+      [attr.fill]="heaven().lawnTop"
+      [attr.transform]="frame.ground"
+      [attr.points]="frame.hedgeStrip"
+    />
+    <polygon [attr.fill]="heaven().lawnTop" [attr.transform]="frame.frontDoor" [attr.points]="frame.beyond" />
+    <rect
+      [attr.fill]="heaven().gravel"
+      [attr.x]="frame.houseEnd"
+      [attr.y]="frame.street"
+      width="648"
+      height="4"
+    />
+    <rect
+      [attr.fill]="heaven().lawn"
+      [attr.x]="frame.beyondEdge"
+      [attr.y]="frame.street"
+      width="400"
+      height="4"
+    />
+    <path [attr.fill]="heaven().lawn" [attr.d]="frame.beyondFringe" />
+    <polygon [attr.fill]="heaven().path" [attr.transform]="frame.frontDoor" [attr.points]="frame.pavement" />
+    <path
+      class="vl-bay"
+      [attr.stroke]="heaven().marking"
+      [attr.transform]="frame.frontDoor"
+      [attr.d]="frame.bay"
+    />
+    <g app-solids [attr.transform]="frame.ground" [parts]="grounds().front" />
+    @if (brand(); as brand) {
+      <text class="vl-sign" [attr.transform]="frame.sign" [style.font-size.px]="brand.size">
+        {{ brand.name }}
+      </text>
+    }
+    <g app-solids [attr.transform]="frame.frontDoor" [parts]="entrance().canopy" />
+    <text class="vl-fascia" [attr.transform]="frame.fascia">BASE</text>
+
+    <g [attr.transform]="frame.top">
+      <polygon [attr.fill]="heaven().gravel" [attr.points]="frame.topDeck" />
+      <g app-solids [parts]="top().behind" />
+      @for (panel of solar(); track panel.x) {
+        @for (half of panel.halves; track $index) {
+          <polygon class="vl-solar" [attr.fill]="half.fill" [attr.points]="half.face" />
+        }
+        <path class="vl-solar-grid" [class.vl-solar-lit]="panel.lit" [attr.d]="panel.grid" />
+      }
+      <g [attr.transform]="frame.fan">
+        <path class="vl-fan" d="M-3 0h6M0-3v6" />
+      </g>
+      <g app-solids [parts]="top().front" />
+      <text class="vl-thermo" [attr.transform]="frame.thermo">{{ thermo() }}</text>
+      <rect
+        class="vl-beacon"
+        [attr.data-tone]="beacon()"
+        [attr.transform]="frame.beacon"
+        x="-2"
+        y="-2"
+        width="4"
+        height="4"
+      />
+    </g>
+
+    <path class="a-shell" [attr.d]="frame.slabs" />
+    <path class="a-shell" [attr.d]="frame.walls" />
+    <path class="a-slab-line" [attr.d]="frame.slabLines" />
+    @if (!place().room) {
+      @for (plate of nameplates; track plate.id) {
+        <text class="vl-room-name" [attr.transform]="plate.transform">{{ plate.label }}</text>
+      }
+    }
+    <rect
+      class="a-footing"
+      [attr.x]="frame.footing.x"
+      [attr.y]="frame.footing.y"
+      [attr.width]="frame.footing.width"
+      height="6"
+    />
+    <g [attr.transform]="lift.transform">
+      <rect
+        class="a-shell"
+        [attr.x]="lift.pit.shell.x"
+        [attr.y]="lift.pit.shell.y"
+        [attr.width]="lift.pit.shell.width"
+        [attr.height]="lift.pit.shell.height"
+      />
+      <rect
+        class="vl-pit"
+        [attr.x]="lift.pit.inside.x"
+        [attr.y]="lift.pit.inside.y"
+        [attr.width]="lift.pit.inside.width"
+        [attr.height]="lift.pit.inside.height"
+      />
+      <g app-solids [attr.transform]="lift.pit.floor" [parts]="lift.pit.buffers" />
+    </g>
+    <g app-solids [attr.transform]="feeder.transform" [parts]="feeder.parts" />
+
+    @if (!inCab()) {
+      <ng-container [ngTemplateOutlet]="figure" />
+    }
+
+    @if (reach(); as corners) {
+      <path class="vl-reach" [attr.d]="corners" />
+    }
+
+    @for (mark of marks(); track mark.key) {
+      <g class="vl-mark" [attr.data-tone]="mark.tone" [attr.transform]="mark.transform">
+        <rect class="vl-mark-ring" x="-7" y="-7" width="14" height="14" />
+        <path class="vl-mark-body" d="M-7-7h14v14h-5v2h-1v1h-2v-1h-1v-2h-5z" />
+        <path class="vl-mark-light" d="M-6-6h12" />
+        <path class="vl-mark-sign" d="M0-4v4.5M0 3.2v.4" />
+      </g>
+    }
+
+    @for (pop of pops(); track pop.id) {
+      <g [attr.transform]="pop.transform">
+        @for (bit of pop.bits; track $index) {
+          <rect
+            class="vl-pop-bit"
+            x="-2"
+            y="-2"
+            width="4"
+            height="4"
+            [style.--vl-dx.px]="bit.dx"
+            [style.--vl-dy.px]="bit.dy"
+          />
+        }
+      </g>
+    }
+  </g>
+
+  <g class="vl-camera" [style.translate]="skyStyle().translate" [style.scale]="skyStyle().scale">
+    <g [attr.transform]="pipeTransform">
+      <g app-solids [parts]="duct()" />
+      @for (window of windows(); track window.label) {
+        <g app-solids [parts]="window.frame" />
+        <text class="vl-gauge-label" [attr.x]="window.x" y="-22.5">{{ window.label }}</text>
+        <text class="vl-gauge-value" [class.vl-gauge-done]="window.done" [attr.x]="window.end" y="-10">
+          {{ window.value }}
+        </text>
+        @if (window.bar; as bar) {
+          <rect class="vl-gauge-track" [attr.x]="bar.x" y="-8" [attr.width]="bar.width" height="2" />
+          <rect class="vl-gauge-fill" [attr.x]="bar.x" y="-8" [attr.width]="bar.filled" height="2" />
+        }
+      }
+    </g>
+  </g>
+  <ng-template #figure>
+    <svg:ellipse class="a-shade" [style.translate]="shadowAt()" rx="11" ry="3" />
+    <svg:g
+      app-figure
+      [move]="move()"
+      [beat]="strides()"
+      [facing]="pose().facing"
+      [style.translate]="figureAt()"
+    />
+  </ng-template>
+</svg>

@@ -1,0 +1,162 @@
+@let task = banner();
+<section class="gm-window dj-task" [attr.data-tone]="task.tone" aria-live="polite">
+  <p class="gm-plaque">
+    <span>{{ task.title }}</span>
+    @if (task.chord.length > 0) {
+      <span class="gm-plaque-note dj-chord" [attr.aria-label]="task.chordLabel">
+        @for (key of task.chord; track $index) {
+          <kbd>{{ key }}</kbd>
+        }
+      </span>
+    } @else if (task.aside) {
+      <span class="gm-plaque-note">{{ task.aside }}</span>
+    }
+  </p>
+  <div class="dj-say">
+    <p class="gm-label">
+      @for (piece of task.say; track $index) {
+        @if (piece.code) {
+          <code>{{ piece.text }}</code>
+        } @else {
+          <span>{{ piece.text }}</span>
+        }
+      }
+    </p>
+    @if (task.go) {
+      <button type="button" class="gm-btn gm-btn-primary gm-btn-sm" (click)="next()">{{ task.go }}</button>
+    }
+  </div>
+  @if (task.hint) {
+    <p class="gm-hint" [attr.data-tone]="task.hintTone">{{ task.hint }}</p>
+  }
+  @if (task.tip) {
+    <p class="gm-note dj-tip">{{ task.tip }}</p>
+  }
+</section>
+
+<div class="dj-ide">
+  <header class="dj-bar">
+    <span class="dj-badge" aria-hidden="true">S</span>
+    <span class="dj-widget">shop</span>
+    <span class="dj-widget dj-branch">main</span>
+    <span class="dj-dots" role="img" [attr.aria-label]="positionLabel()">
+      @for (dot of dots(); track dot.index) {
+        <span class="dj-dot" [attr.data-state]="dot.state"></span>
+      }
+    </span>
+    <span class="dj-position">{{ position() }}</span>
+    <span class="dj-widget dj-run">OrderServiceTest</span>
+    <span class="dj-play" aria-hidden="true"></span>
+  </header>
+
+  <div class="dj-body">
+    <nav class="dj-stripe" aria-hidden="true">
+      @for (icon of stripe(); track icon.name) {
+        <span
+          class="dj-icon"
+          [attr.data-icon]="icon.name"
+          [class.dj-icon-on]="icon.on"
+          [class.dj-icon-low]="icon.low"
+        ></span>
+      }
+    </nav>
+
+    @if (tree(); as tree) {
+      <nav class="dj-tree" aria-label="Projekt">
+        <p class="dj-pane-title">Project</p>
+        @for (row of tree; track row.key) {
+          <p
+            class="dj-row"
+            [style.--dj-depth]="row.depth"
+            [class.dj-folder]="row.folder"
+            [class.dj-here]="row.here"
+            [attr.data-ext]="row.ext"
+          >
+            {{ row.label }}
+          </p>
+        }
+      </nav>
+    }
+
+    <main class="dj-main">
+      <div class="dj-tabs">
+        @for (tab of tabs(); track tab.file) {
+          <span class="dj-tab" [class.dj-tab-on]="tab.on" [attr.data-ext]="tab.ext">{{ tab.file }}</span>
+        }
+      </div>
+
+      <div class="dj-editor">
+        <app-vim-editor
+          [page]="page()"
+          [locked]="locked()"
+          [shortcuts]="shortcuts()"
+          [waiting]="waiting()"
+          [over]="over()"
+          (changed)="changed($event)"
+          (pressed)="pressed()"
+          (chord)="chord($event)"
+          (command)="command($event)"
+        />
+        <span class="dj-inspect" aria-hidden="true"></span>
+        @if (popup(); as popup) {
+          @switch (popup.kind) {
+            @case ('find') {
+              <app-find-popup (opened)="found($event)" (closed)="closePopup()" />
+            }
+            @case ('field') {
+              <app-field-popup
+                [title]="popup.title"
+                [label]="popup.label"
+                [value]="popup.value"
+                [hint]="popup.hint"
+                (entered)="entered($event)"
+                (closed)="closePopup()"
+              />
+            }
+            @case ('goto') {
+              <app-goto-popup
+                [title]="popup.title"
+                [entries]="popup.entries"
+                (opened)="picked($event)"
+                (closed)="closePopup()"
+              />
+            }
+          }
+        }
+        @if (reaction(); as reaction) {
+          <div class="dj-reaction" role="status">
+            <p class="dj-reaction-title">{{ reaction.title }}</p>
+            <p class="dj-reaction-text">{{ reaction.text }}</p>
+          </div>
+        }
+      </div>
+      @if (toolWindow(); as tool) {
+        <section class="dj-tool" [attr.aria-label]="tool.title">
+          <p class="dj-pane-title dj-tool-head">
+            <span>{{ tool.title }}</span>
+            <span class="dj-tool-icons" aria-hidden="true">⋮ −</span>
+          </p>
+          <ol class="dj-tool-rows">
+            @for (row of tool.rows; track row.key) {
+              <li class="dj-tool-row" [attr.data-tone]="row.tone">
+                <span class="dj-tool-place">{{ row.place }}</span>
+                <span class="dj-tool-text">{{ row.text }}</span>
+              </li>
+            }
+          </ol>
+        </section>
+      }
+    </main>
+  </div>
+
+  <footer class="dj-status">
+    <span class="dj-mode" [attr.data-mode]="status().mode">{{ status().mode }}</span>
+    <span>{{ status().keys }}</span>
+    <span class="dj-spacer"></span>
+    <span>{{ status().place }}</span>
+    <span>LF</span>
+    <span>UTF-8</span>
+    <span>{{ status().indent }}</span>
+    <span>{{ status().language }}</span>
+  </footer>
+</div>

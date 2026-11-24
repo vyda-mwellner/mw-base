@@ -1,0 +1,49 @@
+<h1 class="mt-title">Markdown</h1>
+<p class="gm-hint">
+  Markdown einfügen, darunter steht die Vorschau mit den mermaid-Diagrammen und das HTML zum Kopieren.
+</p>
+
+<textarea
+  #input
+  class="mt-input"
+  spellcheck="false"
+  aria-label="Markdown"
+  aria-keyshortcuts="q"
+  placeholder="## Überschrift&#10;&#10;Text mit **fett** und [Link](https://example.org)"
+  [value]="markdown()"
+  (input)="write(input.value, $event)"
+></textarea>
+
+@if (showResult()) {
+  <div class="mt-bar">
+    <app-find-bar
+      class="mt-find"
+      label="In der Vorschau suchen"
+      [total]="finder.total()"
+      [(query)]="finder.query"
+      [(active)]="finder.active"
+    />
+    <button type="button" class="gm-btn gm-btn-sm gm-btn-primary" [disabled]="task.busy()" (click)="copy()">
+      HTML kopieren
+    </button>
+  </div>
+
+  <dl class="gm-stats mt-figures">
+    @for (figure of figures(); track figure.label) {
+      <div class="gm-stat">
+        <dt class="gm-stat-label">{{ figure.label }}</dt>
+        <dd class="gm-stat-value">{{ figure.value }}</dd>
+      </div>
+    }
+  </dl>
+
+  <h2 class="gm-plaque">Vorschau</h2>
+  <article class="mt-paper">
+    <div #preview class="wb-prose" [innerHTML]="trusted()"></div>
+  </article>
+
+  <details class="mt-source">
+    <summary class="gm-plaque">HTML-Code</summary>
+    <pre class="mt-code"><code>{{ html() }}</code></pre>
+  </details>
+}

@@ -1,0 +1,15 @@
+<ul class="gm-rows" aria-label="Nachrichten">
+  @for (entry of entries(); track entry.path) {
+    <li class="gm-row">
+      <button type="button" class="gm-row-main" [routerLink]="[entry.path]">
+        <span class="gm-text">
+          <span class="gm-label ns-label">{{ entry.label }}</span>
+          <span class="gm-note">{{ entry.note.text }}</span>
+        </span>
+        @if (entry.note.tone; as tone) {
+          <span class="gm-led" [attr.data-tone]="tone"><span class="vl-sr-only">Neu</span></span>
+        }
+      </button>
+    </li>
+  }
+</ul>

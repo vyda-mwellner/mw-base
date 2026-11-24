@@ -1,0 +1,46 @@
+@if (error(); as error) {
+  <div class="gm-banner" data-tone="danger">
+    <p class="gm-banner-title">ccusage antwortet nicht</p>
+    <p>{{ error }}</p>
+  </div>
+}
+
+@if (figures().length > 0) {
+  <dl class="gm-stats us-stats">
+    @for (figure of figures(); track figure.label) {
+      <div class="gm-stat">
+        <dt class="gm-stat-label">{{ figure.label }}</dt>
+        <dd class="gm-stat-value">{{ figure.value }}</dd>
+      </div>
+    }
+  </dl>
+
+  <h2 class="gm-plaque">
+    Pro Tag
+    <span class="gm-plaque-note">{{ tokens() }} Tokens</span>
+  </h2>
+  <div class="us-chart" [innerHTML]="chart()"></div>
+
+  @if (models().length > 0) {
+    <h2 class="gm-plaque">Modelle</h2>
+    <ul class="gm-rows">
+      @for (row of models(); track row.model) {
+        <li class="gm-row">
+          <span class="gm-text">
+            <span class="gm-label">{{ row.model }}</span>
+            <span class="gm-note">{{ row.share }}</span>
+          </span>
+          <span class="gm-value">{{ row.cost }}</span>
+        </li>
+      }
+    </ul>
+  }
+} @else if (loading()) {
+  <p class="gm-empty">ccusage liest die Sitzungen ...</p>
+}
+
+<button type="button" class="gm-btn us-gap" aria-keyshortcuts="q" (click)="reload()">Neu lesen</button>
+<p class="gm-hint">
+  Was Claude Code in den letzten {{ windowDays }} Tagen gekostet hätte, zu den Preisen, die ccusage mitbringt,
+  gelesen aus den Sitzungen auf diesem Rechner. Der Zähler auf der Terrasse ist voll am teuersten Tag.
+</p>

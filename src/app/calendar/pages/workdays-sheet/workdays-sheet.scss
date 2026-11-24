@@ -1,0 +1,16 @@
+.ws-period + .ws-period {
+  margin-block-start: var(--vl-space-4);
+}
+
+.ws-stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block-start: var(--vl-space-3);
+}
+
+.ws-gap {
+  margin-block-start: var(--vl-space-4);
+}
+
+.ws-preview {
+  margin: 0 var(--vl-space-3) var(--vl-space-2);
+}

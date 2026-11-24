@@ -1,0 +1,24 @@
+@if (error(); as error) {
+  <div class="gm-banner" data-tone="danger">
+    <p class="gm-banner-title">Nicht lesbar</p>
+    <p>{{ error }}</p>
+  </div>
+}
+<dl class="gm-stats rs-stats">
+  @for (sign of signs(); track sign.env) {
+    <div class="gm-stat">
+      <dt class="gm-stat-label">{{ sign.label }} · {{ sign.text }}</dt>
+      <dd class="gm-stat-value" [attr.data-tone]="sign.light">
+        {{ sign.days }}
+      </dd>
+      <dd class="gm-stat-note">{{ sign.title }}</dd>
+    </div>
+  }
+</dl>
+<button type="button" class="gm-btn rs-gap" aria-keyshortcuts="q" (click)="readAll()">
+  Alle Stages jetzt lesen
+</button>
+<p class="gm-hint">
+  Ein Vorfall ist jeder Container-Neustart, den die Übersicht sieht. Sie liest, solange das Cluster-Blatt
+  offen ist, oder einmal mit Q.
+</p>

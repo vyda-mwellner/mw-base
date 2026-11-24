@@ -1,0 +1,40 @@
+<app-game-frame
+  [unit]="unit"
+  rule="Lass den Block fallen, wenn er über dem Turm ist."
+  [state]="round.phase()"
+  [score]="round.score()"
+  [best]="round.best()"
+  [level]="round.level()"
+  [record]="round.record()"
+  [verdict]="round.verdict()"
+  [note]="note()"
+  [combo]="combo()"
+  [target]="round.target()"
+  [solved]="round.solved()"
+>
+  <svg class="sg-field" viewBox="-150 -230 320 260" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+    <rect class="sg-wall" x="-150" y="-1230" width="320" height="1260" />
+    <path
+      class="sg-bricks"
+      d="M-150 -30h320M-150 -70h320M-150 -110h320M-150 -150h320M-150 -190h320M-150 -230h320M-150 -270h320M-150 -310h320M-150 -350h320M-150 -390h320M-150 -430h320M-150 -470h320M-150 -510h320M-150 -550h320M-150 -590h320M-150 -630h320M-150 -670h320M-150 -710h320M-150 -750h320M-150 -790h320M-150 -830h320M-150 -870h320M-150 -910h320M-150 -950h320M-150 -990h320M-150 -1030h320M-150 -1070h320M-150 -1110h320M-150 -1150h320M-150 -1190h320"
+    />
+    <g [style.translate]="round.shake()">
+      <g class="sg-tower" [style.translate]="climb()">
+        <polygon class="sg-ground" points="-150,0 170,0 192,-17.6 -128,-17.6" />
+        <rect class="sg-ground-front" x="-150" y="0" width="320" height="400" />
+        <path class="sg-ground-edge" d="M-150 0.5h320" />
+        <g app-solids [parts]="parts()" />
+        @if (recordLine(); as y) {
+          <path class="sg-record" [attr.d]="'M-150 ' + y + 'h320'" />
+          <text class="sg-record-label" x="-144" [attr.y]="y - 3">Rekord</text>
+        }
+        <g app-game-fx [juice]="round.juice()" />
+      </g>
+    </g>
+    <g class="sg-gauge" transform="translate(-140 12)">
+      @for (lit of width(); track $index) {
+        <rect class="sg-pip" [class.sg-pip-lit]="lit" [attr.x]="$index * 9" width="7" height="7" />
+      }
+    </g>
+  </svg>
+</app-game-frame>

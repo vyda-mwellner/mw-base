@@ -1,0 +1,40 @@
+@if (mail(); as mail) {
+  <h2 class="gm-plaque">{{ subject() }}</h2>
+  <dl class="mp-fields">
+    @for (field of fields(); track field.label) {
+      <dt>{{ field.label }}</dt>
+      <dd>{{ field.value }}</dd>
+    }
+  </dl>
+
+  @if (attachments().length > 0) {
+    <h2 class="gm-plaque">
+      Anhänge
+      <span class="gm-plaque-note">{{ attachments().length }}</span>
+    </h2>
+    <ul class="gm-rows">
+      @for (attachment of attachments(); track attachment.key) {
+        <li class="gm-row">
+          <span class="gm-text">
+            <span class="gm-label">{{ attachment.name }}</span>
+            <span class="gm-note">{{ attachment.note }}</span>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+
+  <iframe
+    #frame
+    class="mp-body"
+    sandbox="allow-same-origin"
+    tabindex="-1"
+    title="Inhalt der Mail"
+    [srcdoc]="body()"
+    (load)="fit(frame)"
+  ></iframe>
+} @else if (loading()) {
+  <p class="gm-empty">Greenmail wird gefragt ...</p>
+} @else {
+  <p class="gm-empty">Diese Mail ist nicht mehr da.</p>
+}
